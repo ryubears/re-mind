@@ -51,6 +51,9 @@ public class MainActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.nav_toolbar);
         setSupportActionBar(toolbar);
 
+        // Disable title.
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
         // Get view references.
         drawerLayout = findViewById(R.id.main_drawer_layout);
         navigationView = findViewById(R.id.nav_view);
