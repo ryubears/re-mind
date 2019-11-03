@@ -18,7 +18,6 @@ import com.google.android.material.navigation.NavigationView;
 import com.yoseph.re_mind.R;
 import com.yoseph.re_mind.ui.fragments.MapFragment;
 import com.yoseph.re_mind.ui.fragments.OverviewFragment;
-import com.yoseph.re_mind.ui.fragments.SettingsFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -115,8 +114,6 @@ public class MainActivity extends AppCompatActivity {
                 return new OverviewFragment();
             case 1:
                 return new MapFragment();
-            case 2:
-                return new SettingsFragment();
             default:
                 return null;
         }
@@ -148,9 +145,9 @@ public class MainActivity extends AppCompatActivity {
                         CURRENT_TAG = TAG_MAP;
                         break;
                     case R.id.nav_settings:
-                        navItemIndex = 2;
-                        CURRENT_TAG = TAG_SETTINGS;
-                        break;
+                        startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+                        drawerLayout.closeDrawers();
+                        return true;
                     case R.id.nav_about_us:
                         startActivity(new Intent(MainActivity.this, AboutUsActivity.class));
                         drawerLayout.closeDrawers();
