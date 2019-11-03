@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,6 +17,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.navigation.NavigationView;
 import com.yoseph.re_mind.R;
+import com.yoseph.re_mind.ui.fragments.BottomSheetFragment;
 import com.yoseph.re_mind.ui.fragments.MapFragment;
 import com.yoseph.re_mind.ui.fragments.OverviewFragment;
 
@@ -25,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private Toolbar toolbar;
+    private ImageButton fab;
 
     // Index to keep track of current fragment.
     public static int navItemIndex = 0;
@@ -35,7 +38,6 @@ public class MainActivity extends AppCompatActivity {
     // Tags used to identify fragments.
     private static final String TAG_OVERVIEW = "overview";
     private static final String TAG_MAP = "map";
-    private static final String TAG_SETTINGS = "settings";
     public static String CURRENT_TAG = TAG_OVERVIEW;
 
     private Handler handler;
@@ -46,17 +48,20 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Initialize toolbar.
+        // Get view references.
+        drawerLayout = findViewById(R.id.main_drawer_layout);
+        navigationView = findViewById(R.id.nav_view);
         toolbar = findViewById(R.id.nav_toolbar);
+        fab = findViewById(R.id.nav_fab);
+
+        // Initialize toolbar and fab.
         setSupportActionBar(toolbar);
+        setFloatingActionButton();
 
         // Disable title.
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        // Get view references.
-        drawerLayout = findViewById(R.id.main_drawer_layout);
-        navigationView = findViewById(R.id.nav_view);
-
+        // Initialize handler for transitioning between fragments.
         handler = new Handler();
 
         // Load toolbar titles from string resources.
@@ -71,6 +76,19 @@ public class MainActivity extends AppCompatActivity {
             CURRENT_TAG = TAG_OVERVIEW;
             loadFragment();
         }
+
+    }
+
+    private void setFloatingActionButton() {
+        // using BottomSheetDialogFragment
+        final BottomSheetFragment bottomSheetFragment = new BottomSheetFragment();
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                bottomSheetFragment.show(getSupportFragmentManager(), bottomSheetFragment.getTag());
+            }
+        });
     }
 
     private void loadFragment() {

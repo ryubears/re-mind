@@ -19,4 +19,11 @@
         <item>Settings</item>
     </string-array>
 
+    <string name="nav_fab_content_description">Add Task</string>
+
+    <string name="bottom_sheet_edittext_hint">Title</string>
+    <string name="no_alert_text">No Alert</string>
+    <string name="time_alert_text">Time</string>
+    <string name="place_alert_text">Place</string>
+
 </resources>

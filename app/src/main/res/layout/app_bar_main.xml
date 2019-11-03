@@ -41,8 +41,23 @@
             android:layout_height="match_parent"
             app:defaultNavHost="true"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
+
+        <ImageButton
+            android:id="@+id/nav_fab"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/add_white"
+            android:scaleType="centerCrop"
+            android:contentDescription="@string/nav_fab_content_description"
+            android:background="@drawable/nav_fab_background"
+            android:layout_margin="16dp"
+            android:padding="8dp"
+            android:elevation="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
