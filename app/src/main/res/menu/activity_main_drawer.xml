@@ -13,16 +13,15 @@
             android:icon="@drawable/nav_map"
             android:title="@string/menu_map" />
 
-        <item
-            android:id="@+id/nav_settings"
-            android:icon="@drawable/nav_settings"
-            android:title="@string/menu_settings" />
-
     </group>
 
     <item android:title="@string/menu_group_others">
 
         <menu>
+
+            <item
+                android:id="@+id/nav_settings"
+                android:title="@string/menu_settings" />
 
             <item
                 android:id="@+id/nav_about_us"
