@@ -11,14 +11,11 @@ import android.view.ViewGroup;
 
 import com.yoseph.re_mind.R;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class OverviewFragment extends Fragment {
 
 
     public OverviewFragment() {
-        // Required empty public constructor
+        // Required empty public constructor.
     }
 
 
