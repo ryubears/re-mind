@@ -13,10 +13,14 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.yoseph.re_mind.R;
+
 import com.yoseph.re_mind.ui.activities.TaskDetailActivity;
 import com.yoseph.re_mind.ui.activities.TaskDetailFragment;
 import com.yoseph.re_mind.ui.activities.Tasks.TaskContent;
+import com.yoseph.re_mind.data.User;
 
 import java.util.List;
 
@@ -31,13 +35,18 @@ public class OverviewFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        // Get a Firebase Realtime Database reference.
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference root = database.getReference();
+
+        User user = new User(1, "Yehyun", "Ryu");
+        root.child("users").child(String.valueOf(user.id)).setValue(user);
+      
         View rootView = inflater.inflate(R.layout.fragment_overview, container, false);
 
         View recyclerView = rootView.findViewById(R.id.task_list);
         assert recyclerView != null;
         setupRecyclerView((RecyclerView) recyclerView);
-
-        return rootView;
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
