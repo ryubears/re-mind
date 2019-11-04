@@ -25,5 +25,6 @@
     <string name="no_alert_text">No Alert</string>
     <string name="time_alert_text">Time</string>
     <string name="place_alert_text">Place</string>
+    <string name="quick_add">Quick Add</string>
 
 </resources>
