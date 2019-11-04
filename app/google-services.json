@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "105928858064",
+    "firebase_url": "https://re-mind-257921.firebaseio.com",
+    "project_id": "re-mind-257921",
+    "storage_bucket": "re-mind-257921.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:105928858064:android:cf5399a85d255436bac1d5",
+        "android_client_info": {
+          "package_name": "com.yoseph.re_mind"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "105928858064-kivgc0lf914trql016d5nip25vdffvob.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.yoseph.re_mind",
+            "certificate_hash": "74e32e7e15c51021682780b924e27c225724db4d"
+          }
+        },
+        {
+          "client_id": "105928858064-jlbdd58lea79bjctp44n8t393fg0tg0g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAdV9pNIsqwW-O2U8QtGV0t9bVrwn-8C_w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "105928858064-jlbdd58lea79bjctp44n8t393fg0tg0g.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
