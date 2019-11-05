@@ -19,15 +19,12 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.api.model.PlaceLikelihood;
 import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest;
-import com.google.android.libraries.places.api.net.FindCurrentPlaceResponse;
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.yoseph.re_mind.R;
 
@@ -49,13 +46,13 @@ public class MapFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.fragment_map, container, false);
-
         // Initialize Places.
-        Places.initialize(getContext(), "");
+        Places.initialize(getContext(), "AIzaSyB9fkSghArkve3AFZmkxXAY4AIXzw86ywY");
 
         // Create a new Places client instance.
-        final PlacesClient placesClient = Places.createClient(getContext());
+        PlacesClient placesClient = Places.createClient(getContext());
+
+        View rootView = inflater.inflate(R.layout.fragment_map, container, false);
 
         mapView = rootView.findViewById(R.id.map_view);
         mapView.onCreate(savedInstanceState);
@@ -69,48 +66,48 @@ public class MapFragment extends Fragment {
             e.printStackTrace();
         }
 
-        mapView.getMapAsync(new OnMapReadyCallback() {
-            @Override
-            public void onMapReady(GoogleMap map) {
-                googleMap = map;
+        mapView.getMapAsync(map -> {
+            googleMap = map;
 
-                if (ContextCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) ==
-                        PackageManager.PERMISSION_GRANTED &&
-                        ContextCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION) ==
-                                PackageManager.PERMISSION_GRANTED) {
-                    // For showing a 'move to my current location' button.
-                    googleMap.setMyLocationEnabled(true);
-                    googleMap.getUiSettings().setMyLocationButtonEnabled(true);
 
-                    // Use fields to define the data types to return.
-                    List<Place.Field> placeFields = Arrays.asList(Place.Field.NAME);
-                    FindCurrentPlaceRequest request =
-                            FindCurrentPlaceRequest.builder(placeFields).build();
 
-                    // Find current place.
-                    placesClient.findCurrentPlace(request).addOnSuccessListener(((response) -> {
-                        if (response.getPlaceLikelihoods().size() > 0) {
-                            PlaceLikelihood placeLikelihood = response.getPlaceLikelihoods().get(0);
-                            LatLng currentLocation = placeLikelihood.getPlace().getLatLng();
+            if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) ==
+                    PackageManager.PERMISSION_GRANTED &&
+                    ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) ==
+                            PackageManager.PERMISSION_GRANTED) {
+                // For showing a 'move to my current location' button.
+                googleMap.setMyLocationEnabled(true);
+                googleMap.getUiSettings().setMyLocationButtonEnabled(true);
 
-                            googleMap.addMarker(new MarkerOptions().position(currentLocation));
+                // Use fields to define the data types to return.
+                List<Place.Field> placeFields = Arrays.asList(Place.Field.NAME, Place.Field.LAT_LNG);
 
-                            // For zooming automatically to the location of the marker.
-                            CameraPosition cameraPosition = new CameraPosition.Builder().target(currentLocation).zoom(12).build();
-                            googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-                        }
-                    })).addOnFailureListener((exception) -> {
-                        if (exception instanceof ApiException) {
-                            ApiException apiException = (ApiException) exception;
-                            Log.e(TAG, "Place not found: " + apiException.getStatusCode());
-                        }
-                    });
-                } else {
-                    requestPermissions(new String[] {
-                            Manifest.permission.ACCESS_FINE_LOCATION,
-                            Manifest.permission.ACCESS_COARSE_LOCATION
-                        }, REQUEST_PERMISSION_CODE);
-                }
+                // Use the builder to create a FindCurrentPlaceRequest.
+                FindCurrentPlaceRequest request =
+                        FindCurrentPlaceRequest.builder(placeFields).build();
+                placesClient.findCurrentPlace(request).addOnSuccessListener(((response) -> {
+                    if (response.getPlaceLikelihoods().size() > 0) {
+                        PlaceLikelihood placeLikelihood = response.getPlaceLikelihoods().get(0);
+                        LatLng currentLocation = placeLikelihood.getPlace().getLatLng();
+                        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 18));
+                    } else {
+                        LatLng keller = new LatLng(44.974295, -93.232128);
+                        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(keller, 18));
+                    }
+                })).addOnFailureListener((exception) -> {
+                    if (exception instanceof ApiException) {
+                        ApiException apiException = (ApiException) exception;
+                        Log.e(TAG, "Place not found: " + apiException.getStatusCode());
+                    }
+
+                    LatLng keller = new LatLng(44.974295, -93.232128);
+                    googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(keller, 18));
+                });
+            } else {
+                requestPermissions(new String[] {
+                        Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION
+                    }, REQUEST_PERMISSION_CODE);
             }
         });
 

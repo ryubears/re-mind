@@ -47,6 +47,8 @@ public class OverviewFragment extends Fragment {
         View recyclerView = rootView.findViewById(R.id.task_list);
         assert recyclerView != null;
         setupRecyclerView((RecyclerView) recyclerView);
+
+        return rootView;
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
@@ -57,17 +59,14 @@ public class OverviewFragment extends Fragment {
             extends RecyclerView.Adapter<OverviewFragment.SimpleItemRecyclerViewAdapter.ViewHolder> {
 
         private final List<TaskContent.TaskItem> mValues;
-        private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                TaskContent.TaskItem item = (TaskContent.TaskItem) view.getTag();
+        private final View.OnClickListener mOnClickListener = view -> {
+            TaskContent.TaskItem item = (TaskContent.TaskItem) view.getTag();
 
-                Context context = view.getContext();
-                Intent intent = new Intent(context, TaskDetailActivity.class);
-                intent.putExtra(TaskDetailFragment.ARG_ITEM_ID, item.id);
+            Context context = view.getContext();
+            Intent intent = new Intent(context, TaskDetailActivity.class);
+            intent.putExtra(TaskDetailFragment.ARG_ITEM_ID, item.id);
 
-                context.startActivity(intent);
-            }
+            context.startActivity(intent);
         };
 
         SimpleItemRecyclerViewAdapter(List<TaskContent.TaskItem> items) {
