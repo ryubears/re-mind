@@ -16,6 +16,7 @@
         android:layout_marginBottom="8dp"
         android:text="@string/quick_add"
         android:textSize="24sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/horizontalScrollView2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
