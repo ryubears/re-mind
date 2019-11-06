@@ -16,6 +16,8 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.google.android.gms.location.GeofencingClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.material.navigation.NavigationView;
 import com.yoseph.re_mind.R;
 import com.yoseph.re_mind.ui.fragments.BottomSheetFragment;
@@ -41,7 +43,11 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG_MAP = "map";
     public static String CURRENT_TAG = TAG_OVERVIEW;
 
+    // For dealing with transition between fragments.
     private Handler handler;
+
+    // For tracking when user has entered a reminder region.
+    private GeofencingClient geofencingClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,18 +84,14 @@ public class MainActivity extends AppCompatActivity {
             loadFragment();
         }
 
+        // Instantiate GeofencingClient that tracks reminder locations.
+        geofencingClient = LocationServices.getGeofencingClient(this);
     }
 
     private void setFloatingActionButton() {
-        // using BottomSheetDialogFragment
+        // Using BottomSheetDialogFragment.
         final BottomSheetFragment bottomSheetFragment = new BottomSheetFragment();
-
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                bottomSheetFragment.show(getSupportFragmentManager(), bottomSheetFragment.getTag());
-            }
-        });
+        fab.setOnClickListener(view -> bottomSheetFragment.show(getSupportFragmentManager(), bottomSheetFragment.getTag()));
     }
 
     private void loadFragment() {
@@ -107,16 +109,13 @@ public class MainActivity extends AppCompatActivity {
 
         // Sometimes, when fragment has huge data, screen seems hanging when switching between navigation menus.
         // So using runnable, the fragment is loaded with cross fade effect.
-        Runnable pendingRunnable = new Runnable() {
-            @Override
-            public void run() {
-                // Update the main content by replacing fragments.
-                Fragment fragment = getFragment();
-                FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
-                fragmentTransaction.replace(R.id.nav_fragment, fragment, CURRENT_TAG);
-                fragmentTransaction.commitAllowingStateLoss();
-            }
+        Runnable pendingRunnable = () -> {
+            // Update the main content by replacing fragments.
+            Fragment fragment = getFragment();
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
+            fragmentTransaction.replace(R.id.nav_fragment, fragment, CURRENT_TAG);
+            fragmentTransaction.commitAllowingStateLoss();
         };
         handler.post(pendingRunnable);
 
@@ -150,46 +149,42 @@ public class MainActivity extends AppCompatActivity {
 
     private void setUpNavigationView() {
         // Setting Navigation View Item Selected Listener to handle the item click of the navigation menu.
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-
-            @Override
-            public boolean onNavigationItemSelected(MenuItem menuItem) {
-                switch (menuItem.getItemId()) {
-                    case R.id.nav_overview:
-                        navItemIndex = 0;
-                        CURRENT_TAG = TAG_OVERVIEW;
-                        break;
-                    case R.id.nav_map:
-                        navItemIndex = 1;
-                        CURRENT_TAG = TAG_MAP;
-                        break;
-                    case R.id.nav_settings:
-                        startActivity(new Intent(MainActivity.this, SettingsActivity.class));
-                        drawerLayout.closeDrawers();
-                        return true;
-                    case R.id.nav_about_us:
-                        startActivity(new Intent(MainActivity.this, AboutUsActivity.class));
-                        drawerLayout.closeDrawers();
-                        return true;
-                    case R.id.nav_privacy_policy:
-                        startActivity(new Intent(MainActivity.this, PrivacyPolicyActivity.class));
-                        drawerLayout.closeDrawers();
-                        return true;
-                    default:
-                        navItemIndex = 0;
-                }
-
-                // Check if the item is in checked state or not, if not make it in checked state.
-                if (menuItem.isChecked()) {
-                    menuItem.setChecked(false);
-                } else {
-                    menuItem.setChecked(true);
-                }
-                menuItem.setChecked(true);
-
-                loadFragment();
-                return true;
+        navigationView.setNavigationItemSelectedListener(menuItem -> {
+            switch (menuItem.getItemId()) {
+                case R.id.nav_overview:
+                    navItemIndex = 0;
+                    CURRENT_TAG = TAG_OVERVIEW;
+                    break;
+                case R.id.nav_map:
+                    navItemIndex = 1;
+                    CURRENT_TAG = TAG_MAP;
+                    break;
+                case R.id.nav_settings:
+                    startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+                    drawerLayout.closeDrawers();
+                    return true;
+                case R.id.nav_about_us:
+                    startActivity(new Intent(MainActivity.this, AboutUsActivity.class));
+                    drawerLayout.closeDrawers();
+                    return true;
+                case R.id.nav_privacy_policy:
+                    startActivity(new Intent(MainActivity.this, PrivacyPolicyActivity.class));
+                    drawerLayout.closeDrawers();
+                    return true;
+                default:
+                    navItemIndex = 0;
             }
+
+            // Check if the item is in checked state or not, if not make it in checked state.
+            if (menuItem.isChecked()) {
+                menuItem.setChecked(false);
+            } else {
+                menuItem.setChecked(true);
+            }
+            menuItem.setChecked(true);
+
+            loadFragment();
+            return true;
         });
 
 
