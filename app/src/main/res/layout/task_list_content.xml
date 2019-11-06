@@ -42,7 +42,7 @@
         android:id="@+id/iconView"
         android:layout_width="@dimen/overview_icon_size"
         android:layout_height="@dimen/overview_icon_size"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         app:srcCompat="@drawable/arrow_right" />
 
 

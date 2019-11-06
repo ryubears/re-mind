@@ -11,6 +11,10 @@
     <dimen name="item_width">200dp</dimen>
     <dimen name="text_margin">16dp</dimen>
     <dimen name="task_padding">16dp</dimen>
+    <dimen name="task_detail_margin">16dp</dimen>
+    <dimen name="task_detail_spacing">3dp</dimen>
+
     <dimen name="overview_icon_size">32dp</dimen>
+    <dimen name="detail_icon_size">28dp</dimen>
 
 </resources>

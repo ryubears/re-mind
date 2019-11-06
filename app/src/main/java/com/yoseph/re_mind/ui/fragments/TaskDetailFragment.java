@@ -1,4 +1,4 @@
-package com.yoseph.re_mind.ui.activities;
+package com.yoseph.re_mind.ui.fragments;
 
 import android.app.Activity;
 import android.os.Bundle;

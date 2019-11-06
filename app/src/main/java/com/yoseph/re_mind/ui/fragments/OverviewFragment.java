@@ -20,7 +20,6 @@ import com.yoseph.re_mind.R;
 import com.yoseph.re_mind.data.TaskContent;
 import com.yoseph.re_mind.data.User;
 import com.yoseph.re_mind.ui.activities.TaskDetailActivity;
-import com.yoseph.re_mind.ui.activities.TaskDetailFragment;
 
 import java.util.List;
 
