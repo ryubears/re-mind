@@ -1,10 +1,193 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/task_detail"
-    style="?android:attr/textAppearanceLarge"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="16dp"
-    android:textIsSelectable="true"
-    tools:context=".ui.activities.TaskDetailFragment" />
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:context=".ui.fragments.TaskDetailFragment"
+    android:id="@+id/frameLayout">
+
+
+    <TextView
+        android:id="@+id/task_detail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/task_detail_margin"
+        android:textIsSelectable="true" />
+
+    <EditText
+        android:id="@+id/editText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_margin="@dimen/task_detail_margin"
+        android:ems="10"
+        android:gravity="start|bottom"
+        android:hint="@string/description"
+        android:autofillHints="@string/description"
+        android:inputType="textMultiLine" />
+
+    <LinearLayout
+        android:id="@+id/dueDateButton"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:gravity="center_vertical"
+        android:layout_marginHorizontal="@dimen/task_padding"
+        android:layout_marginVertical="@dimen/task_detail_spacing"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:text="@string/due_date"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:layout_width="@dimen/detail_icon_size"
+            android:layout_height="@dimen/detail_icon_size"
+            android:contentDescription="@string/due_date"
+            app:srcCompat="@drawable/event" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginHorizontal="@dimen/task_padding"
+        android:background="#c0c0c0"/>
+
+    <LinearLayout
+        android:id="@+id/setLocationButton"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:gravity="center_vertical"
+        android:layout_marginHorizontal="@dimen/task_padding"
+        android:layout_marginVertical="@dimen/task_detail_spacing"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:text="@string/set_location"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/iconView"
+            android:layout_width="@dimen/detail_icon_size"
+            android:layout_height="@dimen/detail_icon_size"
+            android:contentDescription="@string/set_location"
+            app:srcCompat="@drawable/location" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginHorizontal="@dimen/task_padding"
+        android:background="#c0c0c0"/>
+
+    <LinearLayout
+        android:id="@+id/repeatButton"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:gravity="center_vertical"
+        android:layout_marginHorizontal="@dimen/task_padding"
+        android:layout_marginVertical="@dimen/task_detail_spacing"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:text="@string/repeat"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:layout_width="@dimen/detail_icon_size"
+            android:layout_height="@dimen/detail_icon_size"
+            android:contentDescription="@string/repeat"
+            app:srcCompat="@drawable/repeat" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginHorizontal="@dimen/task_padding"
+        android:background="#c0c0c0"/>
+    <LinearLayout
+        android:id="@+id/shareButton"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:gravity="center_vertical"
+        android:layout_marginHorizontal="@dimen/task_padding"
+        android:layout_marginVertical="@dimen/task_detail_spacing"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:text="@string/share"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:layout_width="@dimen/detail_icon_size"
+            android:layout_height="@dimen/detail_icon_size"
+            android:contentDescription="@string/share"
+            app:srcCompat="@drawable/share" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginHorizontal="@dimen/task_padding"
+        android:background="#c0c0c0"/>
+    <LinearLayout
+        android:id="@+id/setCategoryButton"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:gravity="center_vertical"
+        android:layout_marginHorizontal="@dimen/task_padding"
+        android:layout_marginVertical="@dimen/task_detail_spacing"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:text="@string/set_category"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:layout_width="@dimen/detail_icon_size"
+            android:layout_height="@dimen/detail_icon_size"
+            android:contentDescription="@string/set_category"
+            app:srcCompat="@drawable/category" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginHorizontal="@dimen/task_padding"
+        android:background="#c0c0c0"/>
+
+
+</LinearLayout>
