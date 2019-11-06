@@ -17,6 +17,7 @@ import com.yoseph.re_mind.data.TaskContent;
  * A fragment representing a single Task detail screen.
  */
 public class TaskDetailFragment extends Fragment {
+
     /**
      * The fragment argument representing the item ID that this fragment
      * represents.
@@ -32,8 +33,7 @@ public class TaskDetailFragment extends Fragment {
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public TaskDetailFragment() {
-    }
+    public TaskDetailFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

@@ -40,14 +40,16 @@
         <activity
             android:name=".ui.activities.TaskDetailActivity"
             android:label="@string/title_task_detail"
-            android:parentActivityName=".ui.fragments.OverviewFragment"
+            android:parentActivityName=".ui.activities.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.yoseph.re_mind.ui.fragments.OverviewFragment" />
+                android:value="com.yoseph.re_mind.ui.activities.MainActivity" />
         </activity>
 
         <receiver android:name=".receiver.GeofenceBroadcastReceiver"/>
+
+        <receiver android:name=".receiver.NotificationActionReceiver"/>
 
     </application>
 
