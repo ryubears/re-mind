@@ -1,25 +1,33 @@
 package com.yoseph.re_mind.ui.activities;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.google.android.gms.location.GeofencingClient;
-import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.material.navigation.NavigationView;
 import com.yoseph.re_mind.R;
+import com.yoseph.re_mind.receiver.NotificationActionReceiver;
 import com.yoseph.re_mind.ui.fragments.BottomSheetFragment;
 import com.yoseph.re_mind.ui.fragments.MapFragment;
 import com.yoseph.re_mind.ui.fragments.OverviewFragment;
@@ -46,8 +54,11 @@ public class MainActivity extends AppCompatActivity {
     // For dealing with transition between fragments.
     private Handler handler;
 
-    // For tracking when user has entered a reminder region.
-    private GeofencingClient geofencingClient;
+    // Notification constants.
+    public static final int NOTIFICATION_ID = 1337;
+    private static final String CHANNEL_ID = "re:mind";
+    private static final String CHANNEL_NAME = "re:mind";
+    private static final String CHANNEL_DESCRIPTION = "Contextual Reminder Notifications";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,8 +95,55 @@ public class MainActivity extends AppCompatActivity {
             loadFragment();
         }
 
-        // Instantiate GeofencingClient that tracks reminder locations.
-        geofencingClient = LocationServices.getGeofencingClient(this);
+        // Create an explicit intent for opening TaskDetailActivity.
+        Intent backIntent = new Intent(this, MainActivity.class);
+        backIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        Intent intent = new Intent(this, TaskDetailActivity.class);
+        intent.putExtra(TaskDetailFragment.ARG_ITEM_ID, "1");
+        PendingIntent pendingIntent = PendingIntent.getActivities(this, 17, new Intent[] {backIntent, intent}, PendingIntent.FLAG_ONE_SHOT);
+
+        // Set long click listener for faking notification.
+        createNotificationChannel();
+        ImageView toolbarIcon = findViewById(R.id.toolbar_icon);
+        toolbarIcon.setOnLongClickListener(view -> {
+
+            Intent actionIntent = new Intent(this, NotificationActionReceiver.class);
+            actionIntent.putExtra("notificationId", NOTIFICATION_ID);
+            PendingIntent actionPendingIntent = PendingIntent.getBroadcast(this, NOTIFICATION_ID, actionIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
+                    .setSmallIcon(R.drawable.app_icon)
+                    .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.marker_icon))
+                    .setContentTitle("Demo UI App")
+                    .setContentText("Location: Keller Hall")
+                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                    .setContentIntent(pendingIntent)
+                    .addAction(R.drawable.complete, "Complete", actionPendingIntent)
+                    .addAction(R.drawable.snooze, "Snooze", actionPendingIntent)
+                    .setAutoCancel(true);
+
+            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+            // NotificationId is a unique int for each notification that you must define.
+            notificationManager.notify(NOTIFICATION_ID, builder.build());
+
+            return true;
+        });
+    }
+
+    private void createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = CHANNEL_NAME;
+            String description = CHANNEL_DESCRIPTION;
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
     }
 
     private void setFloatingActionButton() {
