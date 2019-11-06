@@ -1,4 +1,4 @@
-package com.yoseph.re_mind.ui.activities;
+package com.yoseph.re_mind.ui.fragments;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.yoseph.re_mind.R;
-import com.yoseph.re_mind.ui.activities.Tasks.TaskContent;
+import com.yoseph.re_mind.data.TaskContent;
 
 /**
  * A fragment representing a single Task detail screen.

@@ -7,6 +7,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,11 +19,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.yoseph.re_mind.R;
-
-import com.yoseph.re_mind.ui.activities.TaskDetailActivity;
-import com.yoseph.re_mind.ui.activities.TaskDetailFragment;
-import com.yoseph.re_mind.ui.activities.Tasks.TaskContent;
+import com.yoseph.re_mind.data.TaskContent;
 import com.yoseph.re_mind.data.User;
+import com.yoseph.re_mind.ui.activities.TaskDetailActivity;
 
 import java.util.List;
 
@@ -55,10 +56,12 @@ public class OverviewFragment extends Fragment {
         recyclerView.setAdapter(new OverviewFragment.SimpleItemRecyclerViewAdapter(TaskContent.ITEMS));
     }
 
+
+
     public static class SimpleItemRecyclerViewAdapter
             extends RecyclerView.Adapter<OverviewFragment.SimpleItemRecyclerViewAdapter.ViewHolder> {
 
-        private final List<TaskContent.TaskItem> mValues;
+        private List<TaskContent.TaskItem> mValues;
         private final View.OnClickListener mOnClickListener = view -> {
             TaskContent.TaskItem item = (TaskContent.TaskItem) view.getTag();
 
@@ -82,11 +85,14 @@ public class OverviewFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(final OverviewFragment.SimpleItemRecyclerViewAdapter.ViewHolder holder, int position) {
-            holder.mIdView.setText(mValues.get(position).id);
-            holder.mContentView.setText(mValues.get(position).title);
+            holder.mTitle.setText(mValues.get(position).title);
+            holder.mDetailView.setText(mValues.get(position).details);
+
+            holder.mIconView.setImageResource(TaskContent.getIconForType(mValues.get(position).type));
 
             holder.itemView.setTag(mValues.get(position));
             holder.itemView.setOnClickListener(mOnClickListener);
+            holder.mId = position;
         }
 
         @Override
@@ -95,13 +101,30 @@ public class OverviewFragment extends Fragment {
         }
 
         class ViewHolder extends RecyclerView.ViewHolder {
-            final TextView mIdView;
-            final TextView mContentView;
+            final TextView mTitle;
+            final TextView mDetailView;
+            final ImageView mIconView;
+            final RadioButton mButton;
+            int mId;
+
+            public void onSelect(RadioButton mButton) {
+                mValues.remove(mId);
+                mButton.setChecked(false);
+                notifyDataSetChanged();
+            }
 
             ViewHolder(View view) {
                 super(view);
-                mIdView = view.findViewById(R.id.id_text);
-                mContentView = view.findViewById(R.id.content);
+                mDetailView = view.findViewById(R.id.detail);
+                mTitle = view.findViewById(R.id.title);
+                mIconView = view.findViewById(R.id.iconView);
+                mButton = view.findViewById(R.id.radioButton);
+                mButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        onSelect(mButton);
+                    }
+                });
             }
         }
     }

@@ -13,6 +13,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.yoseph.re_mind.R;
 import com.yoseph.re_mind.ui.fragments.OverviewFragment;
+import com.yoseph.re_mind.ui.fragments.TaskDetailFragment;
 
 /**
  * An activity representing a single Task detail screen. This
