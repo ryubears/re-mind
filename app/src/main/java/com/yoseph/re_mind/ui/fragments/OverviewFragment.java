@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -54,10 +56,12 @@ public class OverviewFragment extends Fragment {
         recyclerView.setAdapter(new OverviewFragment.SimpleItemRecyclerViewAdapter(TaskContent.ITEMS));
     }
 
+
+
     public static class SimpleItemRecyclerViewAdapter
             extends RecyclerView.Adapter<OverviewFragment.SimpleItemRecyclerViewAdapter.ViewHolder> {
 
-        private final List<TaskContent.TaskItem> mValues;
+        private List<TaskContent.TaskItem> mValues;
         private final View.OnClickListener mOnClickListener = view -> {
             TaskContent.TaskItem item = (TaskContent.TaskItem) view.getTag();
 
@@ -88,6 +92,7 @@ public class OverviewFragment extends Fragment {
 
             holder.itemView.setTag(mValues.get(position));
             holder.itemView.setOnClickListener(mOnClickListener);
+            holder.mId = position;
         }
 
         @Override
@@ -99,12 +104,27 @@ public class OverviewFragment extends Fragment {
             final TextView mTitle;
             final TextView mDetailView;
             final ImageView mIconView;
+            final RadioButton mButton;
+            int mId;
+
+            public void onSelect(RadioButton mButton) {
+                mValues.remove(mId);
+                mButton.setChecked(false);
+                notifyDataSetChanged();
+            }
 
             ViewHolder(View view) {
                 super(view);
                 mDetailView = view.findViewById(R.id.detail);
                 mTitle = view.findViewById(R.id.title);
                 mIconView = view.findViewById(R.id.iconView);
+                mButton = view.findViewById(R.id.radioButton);
+                mButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        onSelect(mButton);
+                    }
+                });
             }
         }
     }
