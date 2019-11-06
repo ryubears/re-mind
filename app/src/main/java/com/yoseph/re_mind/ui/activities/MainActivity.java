@@ -31,6 +31,7 @@ import com.yoseph.re_mind.receiver.NotificationActionReceiver;
 import com.yoseph.re_mind.ui.fragments.BottomSheetFragment;
 import com.yoseph.re_mind.ui.fragments.MapFragment;
 import com.yoseph.re_mind.ui.fragments.OverviewFragment;
+import com.yoseph.re_mind.ui.fragments.TaskDetailFragment;
 
 public class MainActivity extends AppCompatActivity {
 

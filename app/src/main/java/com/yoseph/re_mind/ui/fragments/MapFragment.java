@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +27,6 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.yoseph.re_mind.R;
 import com.yoseph.re_mind.ui.activities.TaskDetailActivity;
-import com.yoseph.re_mind.ui.activities.TaskDetailFragment;
 
 public class MapFragment extends Fragment implements GoogleMap.OnInfoWindowClickListener {
 
