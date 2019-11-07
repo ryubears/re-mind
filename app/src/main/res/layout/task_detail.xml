@@ -9,20 +9,24 @@
     tools:context=".ui.fragments.TaskDetailFragment"
     android:id="@+id/frameLayout">
 
-
     <TextView
         android:id="@+id/task_detail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/task_detail_margin"
-        android:textIsSelectable="true" />
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:textIsSelectable="true"
+        tools:text="Shopping List"
+        android:textSize="16sp" />
 
     <EditText
         android:id="@+id/editText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
-        android:layout_margin="@dimen/task_detail_margin"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
         android:ems="10"
         android:gravity="start|bottom"
         android:hint="@string/description"
@@ -189,12 +193,10 @@
         android:layout_marginHorizontal="@dimen/task_padding"
         android:background="#c0c0c0"/>
 
-
     <include layout="@layout/quick_add"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        />
+        android:layout_margin="8dp" />
 
 
 
