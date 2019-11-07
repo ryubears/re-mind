@@ -1,7 +1,11 @@
 package com.yoseph.re_mind.ui.fragments;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,29 +17,28 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
-import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MapStyleOptions;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.libraries.places.api.Places;
-import com.google.android.libraries.places.api.model.Place;
-import com.google.android.libraries.places.api.model.PlaceLikelihood;
-import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest;
-import com.google.android.libraries.places.api.net.PlacesClient;
 import com.yoseph.re_mind.R;
+import com.yoseph.re_mind.ui.activities.TaskDetailActivity;
 
-import java.util.Arrays;
-import java.util.List;
-
-public class MapFragment extends Fragment {
+public class MapFragment extends Fragment implements GoogleMap.OnInfoWindowClickListener {
 
     private static final String TAG = MapFragment.class.getSimpleName();
     private static final int REQUEST_PERMISSION_CODE = 1317;
 
-    private PlacesClient placesClient;
+    private FusedLocationProviderClient fusedLocationProviderClient;
+
     private MapView mapView;
     private GoogleMap googleMap;
 
@@ -45,13 +48,11 @@ public class MapFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         // Inflate view to display for fragment.
         View rootView = inflater.inflate(R.layout.fragment_map, container, false);
 
-        // Initialize Places and its client instance.
-        Places.initialize(getContext(), "AIzaSyB9fkSghArkve3AFZmkxXAY4AIXzw86ywY");
-        placesClient = Places.createClient(getContext());
+        // FusedLocationProviderClient is needed to track user location.
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
 
         // Find map view reference and instantiate it.
         mapView = rootView.findViewById(R.id.map_view);
@@ -67,6 +68,17 @@ public class MapFragment extends Fragment {
         // Get google map instance.
         mapView.getMapAsync(map -> {
             googleMap = map;
+            addMarkers();
+
+            try {
+                // Customise the styling of the base map using a JSON object define in a raw resource file.
+                boolean success = googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(getContext(), R.raw.style_json));
+                if (!success) {
+                    Log.e(TAG, "Style parsing failed.");
+                }
+            } catch (Resources.NotFoundException e) {
+                Log.e(TAG, "Can't find style. Error: ", e);
+            }
 
             // Check if location permission has been granted.
             if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) ==
@@ -78,30 +90,20 @@ public class MapFragment extends Fragment {
                 googleMap.setMyLocationEnabled(true);
                 googleMap.getUiSettings().setMyLocationButtonEnabled(true);
 
-                // Use fields to define the data types to return.
-                List<Place.Field> placeFields = Arrays.asList(Place.Field.NAME, Place.Field.LAT_LNG);
-                // Display current location on map.
-                FindCurrentPlaceRequest request =
-                        FindCurrentPlaceRequest.builder(placeFields).build();
-                placesClient.findCurrentPlace(request).addOnSuccessListener(((response) -> {
-                    if (response.getPlaceLikelihoods().size() > 0) {
-                        PlaceLikelihood placeLikelihood = response.getPlaceLikelihoods().get(0);
-                        LatLng currentLocation = placeLikelihood.getPlace().getLatLng();
-                        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 18));
-                    } else {
-                        // Default location to display is keller hall.
+                // Get last known location and use it as starting point for google map to display.
+                fusedLocationProviderClient.getLastLocation()
+                    .addOnSuccessListener(getActivity(), location -> {
+                        if (location != null) {
+                            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 17));
+                        } else {
+                            LatLng keller = new LatLng(44.974295, -93.232128);
+                            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(keller, 17));
+                        }
+                    })
+                    .addOnFailureListener(getActivity(), e -> {
                         LatLng keller = new LatLng(44.974295, -93.232128);
-                        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(keller, 18));
-                    }
-                })).addOnFailureListener((exception) -> {
-                    if (exception instanceof ApiException) {
-                        ApiException apiException = (ApiException) exception;
-                        Log.e(TAG, "Place not found: " + apiException.getStatusCode());
-                    }
-                    // Default location to display is keller hall.
-                    LatLng keller = new LatLng(44.974295, -93.232128);
-                    googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(keller, 18));
-                });
+                        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(keller, 17));
+                    });
             } else {
                 // Ask for permission if permission has not yet been granted.
                 requestPermissions(new String[] {
@@ -114,6 +116,59 @@ public class MapFragment extends Fragment {
         return rootView;
     }
 
+    private void addMarkers() {
+
+        int height = 60;
+        int width = 60;
+        BitmapDrawable bitmapDrawable =(BitmapDrawable) ContextCompat.getDrawable(getContext(), R.drawable.marker_icon);
+        Bitmap b = bitmapDrawable.getBitmap();
+        Bitmap smallMarker = Bitmap.createScaledBitmap(b, width, height, false);
+
+        LatLng position1 = new LatLng(44.973338, -93.236183);
+        MarkerOptions marker1 = new MarkerOptions().position(position1).title("Send Mail").icon(BitmapDescriptorFactory.fromBitmap(smallMarker));
+        marker1.snippet("Coffman Memorial Union");
+        googleMap.addMarker(marker1);
+        CircleOptions circle1 = new CircleOptions().center(position1).radius(75).strokeWidth(1.0f).fillColor(ContextCompat.getColor(getContext(), R.color.markerAreaColor));
+        googleMap.addCircle(circle1);
+
+        LatLng position2 = new LatLng(44.971163, -93.241845);
+        MarkerOptions marker2 = new MarkerOptions().position(position2).title("Turn in Piano Worksheet").icon(BitmapDescriptorFactory.fromBitmap(smallMarker));
+        marker2.snippet("Ferguson Hall");
+        googleMap.addMarker(marker2);
+        CircleOptions circle2 = new CircleOptions().center(position2).radius(75).strokeWidth(1.0f).fillColor(ContextCompat.getColor(getContext(), R.color.markerAreaColor));
+        googleMap.addCircle(circle2);
+
+        LatLng position3 = new LatLng(44.974306, -93.232181);
+        MarkerOptions marker3 = new MarkerOptions().position(position3).title("Demo UI App").icon(BitmapDescriptorFactory.fromBitmap(smallMarker));
+        marker3.snippet("Keller Hall");
+        googleMap.addMarker(marker3);
+        CircleOptions circle3 = new CircleOptions().center(position3).radius(75).strokeWidth(1.0f).fillColor(ContextCompat.getColor(getContext(), R.color.markerAreaColor));
+        googleMap.addCircle(circle3);
+
+        LatLng position4 = new LatLng(44.973536, -93.228941);
+        MarkerOptions marker4 = new MarkerOptions().position(position4).title("Buy Milk").icon(BitmapDescriptorFactory.fromBitmap(smallMarker));
+        marker4.snippet("Walgreens");
+        googleMap.addMarker(marker4);
+        CircleOptions circle4 = new CircleOptions().center(position4).radius(75).strokeWidth(1.0f).fillColor(ContextCompat.getColor(getContext(), R.color.markerAreaColor));
+        googleMap.addCircle(circle4);
+
+        LatLng position5 = new LatLng(44.973467, -93.224730);
+        MarkerOptions marker5 = new MarkerOptions().position(position5).title("Throw Out Trash").icon(BitmapDescriptorFactory.fromBitmap(smallMarker));
+        marker5.snippet("Home");
+        googleMap.addMarker(marker5);
+        CircleOptions circle5 = new CircleOptions().center(position5).radius(75).strokeWidth(1.0f).fillColor(ContextCompat.getColor(getContext(), R.color.markerAreaColor));
+        googleMap.addCircle(circle5);
+
+        googleMap.setOnInfoWindowClickListener(this);
+    }
+
+    @Override
+    public void onInfoWindowClick(Marker marker) {
+        Intent intent = new Intent(getContext(), TaskDetailActivity.class);
+        intent.putExtra(TaskDetailFragment.ARG_ITEM_ID, "1");
+        startActivity(intent);
+    }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -124,12 +179,6 @@ public class MapFragment extends Fragment {
     public void onPause() {
         super.onPause();
         mapView.onPause();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        mapView.onDestroy();
     }
 
     @Override
@@ -151,30 +200,20 @@ public class MapFragment extends Fragment {
                 googleMap.setMyLocationEnabled(true);
                 googleMap.getUiSettings().setMyLocationButtonEnabled(true);
 
-                // Use fields to define the data types to return.
-                List<Place.Field> placeFields = Arrays.asList(Place.Field.NAME, Place.Field.LAT_LNG);
-                // Display current location on map.
-                FindCurrentPlaceRequest request =
-                        FindCurrentPlaceRequest.builder(placeFields).build();
-                placesClient.findCurrentPlace(request).addOnSuccessListener(((response) -> {
-                    if (response.getPlaceLikelihoods().size() > 0) {
-                        PlaceLikelihood placeLikelihood = response.getPlaceLikelihoods().get(0);
-                        LatLng currentLocation = placeLikelihood.getPlace().getLatLng();
-                        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 18));
-                    } else {
-                        // Default location to display is keller hall.
+                // Get last known location and use it as starting point for google map to display.
+                fusedLocationProviderClient.getLastLocation()
+                    .addOnSuccessListener(getActivity(), location -> {
+                        if (location != null) {
+                            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 17));
+                        } else {
+                            LatLng keller = new LatLng(44.974295, -93.232128);
+                            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(keller, 17));
+                        }
+                    })
+                    .addOnFailureListener(getActivity(), e -> {
                         LatLng keller = new LatLng(44.974295, -93.232128);
-                        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(keller, 18));
-                    }
-                })).addOnFailureListener((exception) -> {
-                    if (exception instanceof ApiException) {
-                        ApiException apiException = (ApiException) exception;
-                        Log.e(TAG, "Place not found: " + apiException.getStatusCode());
-                    }
-                    // Default location to display is keller hall.
-                    LatLng keller = new LatLng(44.974295, -93.232128);
-                    googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(keller, 18));
-                });
+                        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(keller, 17));
+                    });
             } else {
                 // Permission denied.
                 Toast.makeText(getContext(), "Permission denied to access current location.", Toast.LENGTH_SHORT).show();

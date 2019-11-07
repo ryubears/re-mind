@@ -8,39 +8,28 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.yoseph.re_mind.R;
 import com.yoseph.re_mind.data.TaskContent;
-import com.yoseph.re_mind.data.User;
 import com.yoseph.re_mind.ui.activities.TaskDetailActivity;
 
 import java.util.List;
 
 public class OverviewFragment extends Fragment {
 
-
     public OverviewFragment() {
         // Required empty public constructor.
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Get a Firebase Realtime Database reference.
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference root = database.getReference();
-
-        User user = new User(1, "Yehyun", "Ryu");
-        root.child("users").child(String.valueOf(user.id)).setValue(user);
-      
         View rootView = inflater.inflate(R.layout.fragment_overview, container, false);
 
         View recyclerView = rootView.findViewById(R.id.task_list);
@@ -56,8 +45,7 @@ public class OverviewFragment extends Fragment {
 
     public static class SimpleItemRecyclerViewAdapter
             extends RecyclerView.Adapter<OverviewFragment.SimpleItemRecyclerViewAdapter.ViewHolder> {
-
-        private final List<TaskContent.TaskItem> mValues;
+        private List<TaskContent.TaskItem> mValues;
         private final View.OnClickListener mOnClickListener = view -> {
             TaskContent.TaskItem item = (TaskContent.TaskItem) view.getTag();
 
@@ -88,6 +76,7 @@ public class OverviewFragment extends Fragment {
 
             holder.itemView.setTag(mValues.get(position));
             holder.itemView.setOnClickListener(mOnClickListener);
+            holder.mId = position;
         }
 
         @Override
@@ -99,12 +88,22 @@ public class OverviewFragment extends Fragment {
             final TextView mTitle;
             final TextView mDetailView;
             final ImageView mIconView;
+            final RadioButton mButton;
+            int mId;
+
+            public void onSelect(RadioButton mButton) {
+                mValues.remove(mId);
+                mButton.setChecked(false);
+                notifyDataSetChanged();
+            }
 
             ViewHolder(View view) {
                 super(view);
                 mDetailView = view.findViewById(R.id.detail);
                 mTitle = view.findViewById(R.id.title);
                 mIconView = view.findViewById(R.id.iconView);
+                mButton = view.findViewById(R.id.radioButton);
+                mButton.setOnClickListener(view1 -> onSelect(mButton));
             }
         }
     }

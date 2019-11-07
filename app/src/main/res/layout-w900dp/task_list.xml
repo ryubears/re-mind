@@ -4,22 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginLeft="16dp"
-    android:layout_marginRight="16dp"
+    android:layout_marginLeft="8dp"
+    android:layout_marginRight="8dp"
     android:baselineAligned="false"
     android:divider="?android:attr/dividerHorizontal"
     android:orientation="horizontal"
     android:showDividers="middle"
     tools:context=".ui.fragments.OverviewFragment">
 
-    <!--
-    This layout is a two-pane layout for the Tasks
-    master/detail flow.
-    
-    -->
+    <!-- This layout is a two-pane layout for the Tasks master/detail flow. -->
 
-    <androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/task_list"
         android:name="com.yoseph.re_mind.ui.activities.TaskListFragment"
         android:layout_width="@dimen/item_width"
