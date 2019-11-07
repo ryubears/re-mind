@@ -80,6 +80,12 @@ public class TaskContent {
         public final String id;
         public final String title;
         public final String details;
+        public String dueDate;
+        public String category;
+        public String repeat;
+        public String share;
+        public String location;
+
         public final int type;
 
 
@@ -88,6 +94,25 @@ public class TaskContent {
             this.title = title;
             this.details = details;
             this.type = type;
+        }
+
+        public void setDueDate(String dueDate) {
+            this.dueDate = dueDate;
+        }
+        public void setCategory(String category) {
+            this.category = category;
+        }
+
+        public void setRepeat(String repeat) {
+            this.repeat = repeat;
+        }
+
+        public void setShare(String share) {
+            this.share = share;
+        }
+
+        public void setLocation(String location) {
+            this.location = location;
         }
 
         @Override
