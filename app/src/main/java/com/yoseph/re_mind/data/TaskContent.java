@@ -81,7 +81,7 @@ public class TaskContent {
         public final String title;
         public final String details;
         public String dueDate;
-        public String category;
+        public CategoryContent.CategoryItem category;
         public String repeat;
         public String share;
         public String location;
@@ -99,7 +99,7 @@ public class TaskContent {
         public void setDueDate(String dueDate) {
             this.dueDate = dueDate;
         }
-        public void setCategory(String category) {
+        public void setCategory(CategoryContent.CategoryItem category) {
             this.category = category;
         }
 
