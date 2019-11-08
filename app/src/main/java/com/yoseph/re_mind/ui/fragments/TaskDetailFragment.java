@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.yoseph.re_mind.R;
+import com.yoseph.re_mind.data.CategoryContent;
 import com.yoseph.re_mind.data.TaskContent;
 import com.yoseph.re_mind.ui.activities.TaskDetailActivity;
 
@@ -79,7 +80,8 @@ public class TaskDetailFragment extends Fragment {
             setLocationButton = DetailButtonFragment.newInstance("Set Location", mItem.location, R.drawable.location, TaskDetailActivity.SET_LOCATION);
             repeatButton = DetailButtonFragment.newInstance("Repeat", mItem.repeat, R.drawable.repeat, TaskDetailActivity.SET_REPEAT);
             shareButton = DetailButtonFragment.newInstance("Shared With", mItem.share, R.drawable.share, TaskDetailActivity.SET_SHARE);
-            setCategoryButton = DetailButtonFragment.newInstance("Set Category", mItem.category, R.drawable.category, TaskDetailActivity.SET_CATEGORY);
+            setCategoryButton = DetailButtonFragment.newInstance("Set Category", mItem.category != null ?  mItem.category.title : "", R.drawable.category, TaskDetailActivity.SET_CATEGORY);
+
 
             //add child fragment
             getChildFragmentManager()
@@ -113,8 +115,13 @@ public class TaskDetailFragment extends Fragment {
 
         if (requestCode == TaskDetailActivity.SET_CATEGORY) {
             String result = (String) data.getSerializableExtra(SetCategoryListDialogFragment.SELECTION);
-            mItem.setCategory(result);
-            setCategoryButton.setValueRender(result);
+
+            for (CategoryContent.CategoryItem item: CategoryContent.CATEGORIES) {
+                if (item.title.equals(result)) {
+                    mItem.setCategory(item);
+                    setCategoryButton.setValueRender(result);
+                }
+            }
         }
 
         if (requestCode == TaskDetailActivity.SET_LOCATION) {
