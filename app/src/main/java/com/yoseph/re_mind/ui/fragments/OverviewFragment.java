@@ -110,8 +110,11 @@ public class OverviewFragment extends Fragment {
             public void onSelect(RadioButton mButton) {
                 mValues.remove(mId);
                 mButton.setChecked(false);
-                notifyDataSetChanged();
+                notifyItemRemoved(mId);
+                notifyItemRangeChanged(mId, getItemCount());
+
             }
+
 
             ViewHolder(View view) {
                 super(view);
