@@ -11,6 +11,7 @@
     <color name="colorShare">#34A853</color>
     <color name="colorList">#FFD300</color>
 
-    <color name="markerAreaColor">#1A000000</color>
+    <color name="markerStrokeColor">#e50000</color>
+    <color name="markerAreaColor">#1Ae50000</color>
 
 </resources>

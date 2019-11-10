@@ -128,35 +128,45 @@ public class MapFragment extends Fragment implements GoogleMap.OnInfoWindowClick
         MarkerOptions marker1 = new MarkerOptions().position(position1).title("Send Mail").icon(BitmapDescriptorFactory.fromBitmap(smallMarker));
         marker1.snippet("Coffman Memorial Union");
         googleMap.addMarker(marker1);
-        CircleOptions circle1 = new CircleOptions().center(position1).radius(75).strokeWidth(1.0f).fillColor(ContextCompat.getColor(getContext(), R.color.markerAreaColor));
+        CircleOptions circle1 = new CircleOptions().center(position1).radius(75).strokeWidth(1.0f)
+                .fillColor(ContextCompat.getColor(getContext(), R.color.markerAreaColor))
+                .strokeColor(ContextCompat.getColor(getContext(), R.color.markerStrokeColor));
         googleMap.addCircle(circle1);
 
         LatLng position2 = new LatLng(44.971163, -93.241845);
         MarkerOptions marker2 = new MarkerOptions().position(position2).title("Turn in Piano Worksheet").icon(BitmapDescriptorFactory.fromBitmap(smallMarker));
         marker2.snippet("Ferguson Hall");
         googleMap.addMarker(marker2);
-        CircleOptions circle2 = new CircleOptions().center(position2).radius(75).strokeWidth(1.0f).fillColor(ContextCompat.getColor(getContext(), R.color.markerAreaColor));
+        CircleOptions circle2 = new CircleOptions().center(position2).radius(75).strokeWidth(1.0f)
+                .fillColor(ContextCompat.getColor(getContext(), R.color.markerAreaColor))
+                .strokeColor(ContextCompat.getColor(getContext(), R.color.markerStrokeColor));
         googleMap.addCircle(circle2);
 
         LatLng position3 = new LatLng(44.974306, -93.232181);
         MarkerOptions marker3 = new MarkerOptions().position(position3).title("Demo UI App").icon(BitmapDescriptorFactory.fromBitmap(smallMarker));
         marker3.snippet("Keller Hall");
         googleMap.addMarker(marker3);
-        CircleOptions circle3 = new CircleOptions().center(position3).radius(75).strokeWidth(1.0f).fillColor(ContextCompat.getColor(getContext(), R.color.markerAreaColor));
+        CircleOptions circle3 = new CircleOptions().center(position3).radius(75).strokeWidth(1.0f)
+                .fillColor(ContextCompat.getColor(getContext(), R.color.markerAreaColor))
+                .strokeColor(ContextCompat.getColor(getContext(), R.color.markerStrokeColor));
         googleMap.addCircle(circle3);
 
         LatLng position4 = new LatLng(44.973536, -93.228941);
         MarkerOptions marker4 = new MarkerOptions().position(position4).title("Buy Milk").icon(BitmapDescriptorFactory.fromBitmap(smallMarker));
         marker4.snippet("Walgreens");
         googleMap.addMarker(marker4);
-        CircleOptions circle4 = new CircleOptions().center(position4).radius(75).strokeWidth(1.0f).fillColor(ContextCompat.getColor(getContext(), R.color.markerAreaColor));
+        CircleOptions circle4 = new CircleOptions().center(position4).radius(75).strokeWidth(1.0f)
+                .fillColor(ContextCompat.getColor(getContext(), R.color.markerAreaColor))
+                .strokeColor(ContextCompat.getColor(getContext(), R.color.markerStrokeColor));
         googleMap.addCircle(circle4);
 
         LatLng position5 = new LatLng(44.973467, -93.224730);
         MarkerOptions marker5 = new MarkerOptions().position(position5).title("Throw Out Trash").icon(BitmapDescriptorFactory.fromBitmap(smallMarker));
         marker5.snippet("Home");
         googleMap.addMarker(marker5);
-        CircleOptions circle5 = new CircleOptions().center(position5).radius(75).strokeWidth(1.0f).fillColor(ContextCompat.getColor(getContext(), R.color.markerAreaColor));
+        CircleOptions circle5 = new CircleOptions().center(position5).radius(75).strokeWidth(1.0f)
+                .fillColor(ContextCompat.getColor(getContext(), R.color.markerAreaColor))
+                .strokeColor(ContextCompat.getColor(getContext(), R.color.markerStrokeColor));
         googleMap.addCircle(circle5);
 
         googleMap.setOnInfoWindowClickListener(this);
