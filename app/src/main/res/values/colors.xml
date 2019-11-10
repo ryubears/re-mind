@@ -5,6 +5,11 @@
     <color name="colorPrimaryDark">#000000</color>
     <color name="colorAccent">#e50000</color>
     <color name="colorBlack">#000000</color>
+    <color name="ImperialRed">#ED2939</color>
+    <color name="colorGlobe">#009dff</color>
+    <color name="colorUmbrella">#395877</color>
+    <color name="colorShare">#34A853</color>
+    <color name="colorList">#FFD300</color>
 
     <color name="markerAreaColor">#1A000000</color>
 
