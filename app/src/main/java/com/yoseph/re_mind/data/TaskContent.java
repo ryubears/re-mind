@@ -88,6 +88,8 @@ public class TaskContent {
 
         public final int type;
 
+        public final List<String> subList = new ArrayList<>();
+
 
         public TaskItem(String id, String title, String details, int type) {
             this.id = id;
