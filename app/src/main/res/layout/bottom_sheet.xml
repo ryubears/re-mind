@@ -19,6 +19,8 @@
         android:hint="@string/bottom_sheet_edittext_hint"
         android:textSize="24sp"
         android:lines="1"
+        android:singleLine="true"
+        android:imeOptions="actionDone"
         android:background="@android:color/white"
         android:paddingStart="4dp"
         android:layout_marginBottom="24dp"
@@ -51,6 +53,7 @@
         app:layout_constraintEnd_toEndOf="parent">
 
         <LinearLayout
+            android:id="@+id/no_alert_layout"
             android:layout_width="72dp"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -77,6 +80,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/time_alert_layout"
             android:layout_width="72dp"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -102,6 +106,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/location_alert_layout"
             android:layout_width="72dp"
             android:layout_height="wrap_content"
             android:orientation="vertical"
