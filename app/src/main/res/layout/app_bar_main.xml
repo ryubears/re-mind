@@ -26,7 +26,16 @@
                 android:layout_gravity="center"
                 android:src="@drawable/app_icon_white" />
 
+            <Button
+                android:id="@+id/profile_button"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:layout_gravity="end"
+                android:text="@string/menu_profile" />
+
         </androidx.appcompat.widget.Toolbar>
+
+
 
     </com.google.android.material.appbar.AppBarLayout>
 

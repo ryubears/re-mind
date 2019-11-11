@@ -9,6 +9,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -73,9 +74,11 @@ public class MainActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.nav_toolbar);
         fab = findViewById(R.id.nav_fab);
 
+
         // Initialize toolbar and fab.
         setSupportActionBar(toolbar);
         setFloatingActionButton();
+        setProfileButton();
 
         // Disable title.
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -151,6 +154,15 @@ public class MainActivity extends AppCompatActivity {
         // Using BottomSheetDialogFragment.
         final BottomSheetFragment bottomSheetFragment = new BottomSheetFragment();
         fab.setOnClickListener(view -> bottomSheetFragment.show(getSupportFragmentManager(), bottomSheetFragment.getTag()));
+    }
+
+    private void setProfileButton() {
+        final Button button = (Button) findViewById(R.id.profile_button);
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, ProfileActivity.class));
+            }
+        });
     }
 
     private void loadFragment() {
