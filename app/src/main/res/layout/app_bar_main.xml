@@ -31,10 +31,11 @@
                 android:layout_width="100dp"
                 android:layout_height="50dp"
                 android:layout_gravity="end"
-                android:text="@string/menu_profile" />
+                android:backgroundTint="#FFFFFF"
+                android:text="@string/menu_profile"
+                android:textColor="#000000" />
 
         </androidx.appcompat.widget.Toolbar>
-
 
 
     </com.google.android.material.appbar.AppBarLayout>
