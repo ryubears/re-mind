@@ -3,6 +3,7 @@ package com.yoseph.re_mind.ui.fragments;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.telecom.Call;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ import com.yoseph.re_mind.R;
 import com.yoseph.re_mind.data.CategoryContent;
 import com.yoseph.re_mind.data.TaskContent;
 import com.yoseph.re_mind.ui.activities.TaskDetailActivity;
+import com.yoseph.re_mind.ui.interfaces.CallBackListener;
 
 import java.util.Date;
 import java.util.List;
@@ -28,7 +30,7 @@ import java.util.List;
 /**
  * A fragment representing a single Task detail screen.
  */
-public class TaskDetailFragment extends Fragment {
+public class TaskDetailFragment extends Fragment implements CallBackListener {
 
     /**
      * The fragment argument representing the item ID that this fragment
@@ -49,6 +51,7 @@ public class TaskDetailFragment extends Fragment {
 
     private ChipGroup chips;
     private RecyclerView subItemsViews;
+    private TextView emptyView;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -80,6 +83,8 @@ public class TaskDetailFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.task_detail, container, false);
 
+        emptyView = rootView.findViewById(R.id.empty_view);
+
         // Show the dummy content as text in a TextView.
         if (mItem != null) {
             ((TextView) rootView.findViewById(R.id.task_detail)).setText(mItem.details);
@@ -92,7 +97,6 @@ public class TaskDetailFragment extends Fragment {
             shareButton = DetailButtonFragment.newInstance("Shared With", mItem.share, R.drawable.share, TaskDetailActivity.SET_SHARE);
             setCategoryButton = DetailButtonFragment.newInstance("Set Category", mItem.category != null ?  mItem.category.title : "", R.drawable.category, TaskDetailActivity.SET_CATEGORY);
 
-
             //add child fragment
             getChildFragmentManager()
                     .beginTransaction()
@@ -103,7 +107,6 @@ public class TaskDetailFragment extends Fragment {
                     .add(R.id.actionButtons, setCategoryButton)
                     .commit();
 
-
             subItemsViews = rootView.findViewById(R.id.sub_task_list);
             assert subItemsViews != null;
             setupRecyclerView(subItemsViews);
@@ -113,23 +116,18 @@ public class TaskDetailFragment extends Fragment {
                 View nextChild = chips.getChildAt(index);
 
                 if (nextChild instanceof Chip) {
-                    nextChild.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            mItem.subList.add(((Chip) view).getText().toString());
-                            chips.removeView(nextChild);
-                            subItemsViews.getAdapter().notifyDataSetChanged();
-                        }
+                    nextChild.setOnClickListener(view -> {
+                        mItem.subList.add(((Chip) view).getText().toString());
+                        chips.removeView(nextChild);
+                        subItemsViews.getAdapter().notifyDataSetChanged();
+                        onCallBack();
                     });
-
                 }
             }
         }
 
-
         return rootView;
     }
-
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -204,12 +202,24 @@ public class TaskDetailFragment extends Fragment {
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        recyclerView.setAdapter(new TaskDetailFragment.SimpleItemRecyclerViewAdapter(mItem.subList));
+        recyclerView.setAdapter(new TaskDetailFragment.SimpleItemRecyclerViewAdapter(mItem.subList, this));
+    }
+
+    @Override
+    public void onCallBack() {
+        if (mItem.subList.size() == 0) {
+            emptyView.setVisibility(View.VISIBLE);
+            subItemsViews.setVisibility(View.GONE);
+        } else {
+            emptyView.setVisibility(View.GONE);
+            subItemsViews.setVisibility(View.VISIBLE);
+        }
     }
 
     public static class SimpleItemRecyclerViewAdapter
             extends RecyclerView.Adapter<TaskDetailFragment.SimpleItemRecyclerViewAdapter.ViewHolder> {
         private List<String> mValues;
+        private CallBackListener callBackListener;
 //        private final View.OnClickListener mOnClickListener = view -> {
 //            TaskContent.TaskItem item = (TaskContent.TaskItem) view.getTag();
 //
@@ -220,8 +230,9 @@ public class TaskDetailFragment extends Fragment {
 //            context.startActivity(intent);
 //        };
 
-        SimpleItemRecyclerViewAdapter(List<String> items) {
+        SimpleItemRecyclerViewAdapter(List<String> items, CallBackListener callBackListener) {
             mValues = items;
+            this.callBackListener = callBackListener;
         }
 
         @Override
@@ -256,8 +267,8 @@ public class TaskDetailFragment extends Fragment {
                 notifyItemRemoved(mId);
                 notifyItemRangeChanged(mId, getItemCount());
 
+                callBackListener.onCallBack();
             }
-
 
             ViewHolder(View view) {
                 super(view);
