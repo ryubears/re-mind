@@ -96,7 +96,6 @@ public class OverviewFragment extends Fragment {
                 mButton.setChecked(false);
                 notifyItemRemoved(mId);
                 notifyItemRangeChanged(mId, getItemCount());
-
             }
 
 

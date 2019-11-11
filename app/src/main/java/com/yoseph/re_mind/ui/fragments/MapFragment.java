@@ -143,7 +143,7 @@ public class MapFragment extends Fragment implements GoogleMap.OnInfoWindowClick
         googleMap.addCircle(circle2);
 
         LatLng position3 = new LatLng(44.974306, -93.232181);
-        MarkerOptions marker3 = new MarkerOptions().position(position3).title("Demo UI App").icon(BitmapDescriptorFactory.fromBitmap(smallMarker));
+        MarkerOptions marker3 = new MarkerOptions().position(position3).title("Drop off take home midterm").icon(BitmapDescriptorFactory.fromBitmap(smallMarker));
         marker3.snippet("Keller Hall");
         googleMap.addMarker(marker3);
         CircleOptions circle3 = new CircleOptions().center(position3).radius(75).strokeWidth(1.0f)
@@ -175,7 +175,7 @@ public class MapFragment extends Fragment implements GoogleMap.OnInfoWindowClick
     @Override
     public void onInfoWindowClick(Marker marker) {
         Intent intent = new Intent(getContext(), TaskDetailActivity.class);
-        intent.putExtra(TaskDetailFragment.ARG_ITEM_ID, "1");
+        intent.putExtra(TaskDetailFragment.ARG_ITEM_ID, "5");
         startActivity(intent);
     }
 

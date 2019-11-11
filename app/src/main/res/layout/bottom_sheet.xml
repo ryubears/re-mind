@@ -56,7 +56,9 @@
             android:orientation="vertical"
             android:gravity="center"
             android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp">
+            android:layout_marginEnd="20dp"
+            android:padding="8dp"
+            android:background="@drawable/bottom_sheet_item_background">
 
             <ImageView
                 android:layout_width="32dp"
@@ -80,7 +82,8 @@
             android:orientation="vertical"
             android:gravity="center"
             android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp">
+            android:layout_marginEnd="20dp"
+            android:padding="8dp">
 
             <ImageView
                 android:layout_width="32dp"
@@ -104,7 +107,8 @@
             android:orientation="vertical"
             android:gravity="center"
             android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp">
+            android:layout_marginEnd="20dp"
+            android:padding="8dp">
 
             <ImageView
                 android:layout_width="32dp"

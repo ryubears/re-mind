@@ -26,6 +26,8 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.yoseph.re_mind.R;
 import com.yoseph.re_mind.receiver.NotificationActionReceiver;
 import com.yoseph.re_mind.ui.fragments.BottomSheetFragment;
@@ -113,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
             PendingIntent actionPendingIntent = PendingIntent.getBroadcast(this, NOTIFICATION_ID, actionIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 
             NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
-                    .setSmallIcon(R.drawable.app_icon)
+                    .setSmallIcon(R.drawable.logo_imperialred)
                     .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.marker_icon))
                     .setContentTitle("Demo UI App")
                     .setContentText("Location: Keller Hall")
@@ -129,6 +131,9 @@ public class MainActivity extends AppCompatActivity {
 
             return true;
         });
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference root = database.getReference();
     }
 
     private void createNotificationChannel() {
