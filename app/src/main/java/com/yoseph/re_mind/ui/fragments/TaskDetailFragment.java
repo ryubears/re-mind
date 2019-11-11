@@ -23,6 +23,7 @@ import com.yoseph.re_mind.data.CategoryContent;
 import com.yoseph.re_mind.data.TaskContent;
 import com.yoseph.re_mind.ui.activities.TaskDetailActivity;
 import com.yoseph.re_mind.ui.interfaces.CallBackListener;
+import com.yoseph.re_mind.ui.interfaces.TaskDetailCallBackListener;
 
 import java.util.Date;
 import java.util.List;
@@ -30,7 +31,7 @@ import java.util.List;
 /**
  * A fragment representing a single Task detail screen.
  */
-public class TaskDetailFragment extends Fragment implements CallBackListener {
+public class TaskDetailFragment extends Fragment implements TaskDetailCallBackListener {
 
     /**
      * The fragment argument representing the item ID that this fragment
@@ -120,7 +121,7 @@ public class TaskDetailFragment extends Fragment implements CallBackListener {
                         mItem.subList.add(((Chip) view).getText().toString());
                         chips.removeView(nextChild);
                         subItemsViews.getAdapter().notifyDataSetChanged();
-                        onCallBack();
+                        onCallBack(null);
                     });
                 }
             }
@@ -145,9 +146,9 @@ public class TaskDetailFragment extends Fragment implements CallBackListener {
 
         if (requestCode == TaskDetailActivity.SET_CATEGORY) {
             if (data.hasExtra(SetCategoryListDialogFragment.CREATE_NEW)) {
-                DialogFragment f = TypeItemBottomSheetListDialogFragment.newInstance("Add new sub task");
-                f.setTargetFragment(this, TaskDetailActivity.SET_CATEGORY);
-                f.show(this.getFragmentManager(), "typeNewCategory");
+                DialogFragment dialogFragment = TypeItemBottomSheetListDialogFragment.newInstance("Add new sub task");
+                dialogFragment.setTargetFragment(this, TaskDetailActivity.SET_CATEGORY);
+                dialogFragment.show(this.getFragmentManager(), "typeNewCategory");
             } else {
 
                 String result = (String) data.getSerializableExtra(SetCategoryListDialogFragment.TEXT);
@@ -171,9 +172,9 @@ public class TaskDetailFragment extends Fragment implements CallBackListener {
 
         if (requestCode == TaskDetailActivity.SET_LOCATION) {
             if (data.hasExtra(SetCategoryListDialogFragment.CREATE_NEW)) {
-                DialogFragment f = TypeItemBottomSheetListDialogFragment.newInstance("Search for a location");
-                f.setTargetFragment(this, TaskDetailActivity.SET_LOCATION);
-                f.show(this.getFragmentManager(), "typeNewLocation");
+                DialogFragment dialogFragment = TypeItemBottomSheetListDialogFragment.newInstance("Search for a location");
+                dialogFragment.setTargetFragment(this, TaskDetailActivity.SET_LOCATION);
+                dialogFragment.show(this.getFragmentManager(), "typeNewLocation");
             } else {
 
                 String result = (String) data.getSerializableExtra(SetCategoryListDialogFragment.TEXT);
@@ -206,7 +207,7 @@ public class TaskDetailFragment extends Fragment implements CallBackListener {
     }
 
     @Override
-    public void onCallBack() {
+    public void onCallBack(String title) {
         if (mItem.subList.size() == 0) {
             emptyView.setVisibility(View.VISIBLE);
             subItemsViews.setVisibility(View.GONE);
@@ -214,12 +215,26 @@ public class TaskDetailFragment extends Fragment implements CallBackListener {
             emptyView.setVisibility(View.GONE);
             subItemsViews.setVisibility(View.VISIBLE);
         }
+
+        if (title != null) {
+            Chip chip = new Chip(chips.getContext());
+            chip.setText(title);
+            chip.setClickable(true);
+            chip.setCheckable(false);
+            chip.setOnClickListener(view -> {
+                mItem.subList.add(((Chip) view).getText().toString());
+                chips.removeView(chip);
+                subItemsViews.getAdapter().notifyDataSetChanged();
+                onCallBack(null);
+            });
+            chips.addView(chip);
+        }
     }
 
     public static class SimpleItemRecyclerViewAdapter
             extends RecyclerView.Adapter<TaskDetailFragment.SimpleItemRecyclerViewAdapter.ViewHolder> {
         private List<String> mValues;
-        private CallBackListener callBackListener;
+        private TaskDetailCallBackListener callBackListener;
 //        private final View.OnClickListener mOnClickListener = view -> {
 //            TaskContent.TaskItem item = (TaskContent.TaskItem) view.getTag();
 //
@@ -230,7 +245,7 @@ public class TaskDetailFragment extends Fragment implements CallBackListener {
 //            context.startActivity(intent);
 //        };
 
-        SimpleItemRecyclerViewAdapter(List<String> items, CallBackListener callBackListener) {
+        SimpleItemRecyclerViewAdapter(List<String> items, TaskDetailCallBackListener callBackListener) {
             mValues = items;
             this.callBackListener = callBackListener;
         }
@@ -247,7 +262,6 @@ public class TaskDetailFragment extends Fragment implements CallBackListener {
             holder.mTitle.setText(mValues.get(position));
 
             holder.itemView.setTag(mValues.get(position));
-//            holder.itemView.setOnClickListener(mOnClickListener);
             holder.mId = position;
         }
 
@@ -267,7 +281,7 @@ public class TaskDetailFragment extends Fragment implements CallBackListener {
                 notifyItemRemoved(mId);
                 notifyItemRangeChanged(mId, getItemCount());
 
-                callBackListener.onCallBack();
+                callBackListener.onCallBack(mTitle.getText().toString());
             }
 
             ViewHolder(View view) {

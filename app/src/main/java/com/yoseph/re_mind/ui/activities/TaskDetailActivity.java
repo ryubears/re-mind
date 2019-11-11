@@ -98,22 +98,22 @@ public class TaskDetailActivity extends AppCompatActivity implements DetailButto
     @Override
     public void onFragmentInteraction(int type){
 
-        DialogFragment f = null;
+        DialogFragment dialogFragment = null;
         if (type == SET_DATE){
-            f = new DatePickerFragment();
+            dialogFragment = new DatePickerFragment();
         } else if (type == SET_SHARE) {
-            f = TypeItemBottomSheetListDialogFragment.newInstance("Email to share task with");
+            dialogFragment = TypeItemBottomSheetListDialogFragment.newInstance("Email to share task with");
         } else if (type == SET_CATEGORY) {
-            f = SetCategoryListDialogFragment.newInstance("Set Category", "For filtering actions", R.drawable.category, CategoryContent.getTitles(), CategoryContent.getIcons());
+            dialogFragment = SetCategoryListDialogFragment.newInstance("Set Category", "For filtering actions", R.drawable.category, CategoryContent.getTitles(), CategoryContent.getIcons());
         } else if (type == SET_LOCATION) {
             String[] optionTitles = new String[] { "Grocery", "Pharmacy", "Home Improvement" };
             int[] optionIcons = new int[] { R.drawable.category, R.drawable.event, R.drawable.category, R.drawable.add_black };
-            f = SetCategoryListDialogFragment.newInstance("Set Location", "Be reminded when you travel nearby", R.drawable.location, optionTitles, optionIcons);
+            dialogFragment = SetCategoryListDialogFragment.newInstance("Set Location", "Be reminded when you travel nearby", R.drawable.location, optionTitles, optionIcons);
         }
 
-        if (f != null) {
-            f.setTargetFragment(fragment, type);
-            f.show(getSupportFragmentManager(), "buttonAction");
+        if (dialogFragment != null) {
+            dialogFragment.setTargetFragment(fragment, type);
+            dialogFragment.show(getSupportFragmentManager(), "buttonAction");
         }
 
     }

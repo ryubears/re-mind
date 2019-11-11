@@ -34,7 +34,7 @@ public class TypeItemBottomSheetListDialogFragment extends BottomSheetDialogFrag
 
     private String title;
 
-    private EditText edit;
+    private EditText editView;
 
     // TODO: Customize parameters
     public static TypeItemBottomSheetListDialogFragment newInstance(String textName) {
@@ -57,44 +57,36 @@ public class TypeItemBottomSheetListDialogFragment extends BottomSheetDialogFrag
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_typeitembottomsheet_list_dialog, container, false);
-        ((TextView) v.findViewById(R.id.dialog_title)).setText(title);
+        View view = inflater.inflate(R.layout.fragment_typeitembottomsheet_list_dialog, container, false);
 
-        edit = v.findViewById(R.id.dialog_text);
-        edit.setOnEditorActionListener(new EditText.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
-//                    submit_btn.performClick();
+        editView = view.findViewById(R.id.dialog_text);
+        editView.setHint(title);
+        editView.setOnEditorActionListener((v1, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
 
-                    Intent intent = new Intent();
-                    intent.putExtra(TEXT, edit.getText().toString());
+                Intent intent = new Intent();
+                intent.putExtra(TEXT, editView.getText().toString());
 
-                    // pass intent to target fragment
-                    Fragment f = getTargetFragment();
-                    f.onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, intent);
-                    dismiss();
+                // pass intent to target fragment
+                Fragment fragment = getTargetFragment();
+                fragment.onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, intent);
+                dismiss();
 
-                    return true;
-                }
-                return false;
+                return true;
             }
+            return false;
         });
 
-        return v;
+        return view;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        edit.post(new Runnable() {
-            @Override
-            public void run() {
-                edit.requestFocus();
-                InputMethodManager imgr = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                imgr.showSoftInput(edit, InputMethodManager.SHOW_IMPLICIT);
-
-            }
+        editView.post(() -> {
+            editView.requestFocus();
+            InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            inputMethodManager.showSoftInput(editView, InputMethodManager.SHOW_IMPLICIT);
         });
     }
 
