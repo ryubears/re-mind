@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
@@ -48,7 +47,7 @@ public class TaskDetailFragment extends Fragment {
     private DetailButtonFragment setCategoryButton;
 
     private ChipGroup chips;
-    private ListView lv;
+    private RecyclerView subItemsViews;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -104,9 +103,9 @@ public class TaskDetailFragment extends Fragment {
                     .commit();
 
 
-            View recyclerView = rootView.findViewById(R.id.sub_task_list);
-            assert recyclerView != null;
-            setupRecyclerView((RecyclerView) recyclerView);
+            subItemsViews = rootView.findViewById(R.id.sub_task_list);
+            assert subItemsViews != null;
+            setupRecyclerView(subItemsViews);
 
             chips = rootView.findViewById(R.id.quick_add_chips);
             for(int index = 0; index < chips.getChildCount(); index++) {
@@ -118,7 +117,7 @@ public class TaskDetailFragment extends Fragment {
                         public void onClick(View view) {
                             mItem.subList.add(((Chip) view).getText().toString());
                             chips.removeView(nextChild);
-                            ((RecyclerView) recyclerView).getAdapter().notifyDataSetChanged();
+                            subItemsViews.getAdapter().notifyDataSetChanged();
                         }
                     });
 
@@ -172,6 +171,12 @@ public class TaskDetailFragment extends Fragment {
             String result = (String) data.getSerializableExtra(DatePickerFragment.DATE);
             mItem.setShare(result);
             shareButton.setValueRender(result);
+        }
+
+        if (requestCode == TaskDetailActivity.ADD_SUB_TASK) {
+            String result = (String) data.getSerializableExtra(TypeItemBottomSheetListDialogFragment.TEXT);
+            mItem.subList.add(result);
+            subItemsViews.getAdapter().notifyDataSetChanged();
         }
     }
 
