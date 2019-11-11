@@ -11,7 +11,6 @@ import android.os.Handler;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -24,16 +23,20 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.yoseph.re_mind.R;
 import com.yoseph.re_mind.receiver.NotificationActionReceiver;
 import com.yoseph.re_mind.ui.fragments.BottomSheetFragment;
 import com.yoseph.re_mind.ui.fragments.MapFragment;
 import com.yoseph.re_mind.ui.fragments.OverviewFragment;
 import com.yoseph.re_mind.ui.fragments.TaskDetailFragment;
+import com.yoseph.re_mind.ui.interfaces.CallBackListener;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements CallBackListener {
+
+
 
     // View references.
     private DrawerLayout drawerLayout;
@@ -113,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
             PendingIntent actionPendingIntent = PendingIntent.getBroadcast(this, NOTIFICATION_ID, actionIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 
             NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
-                    .setSmallIcon(R.drawable.app_icon)
+                    .setSmallIcon(R.drawable.logo_imperialred)
                     .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.marker_icon))
                     .setContentTitle("Demo UI App")
                     .setContentText("Location: Keller Hall")
@@ -129,6 +132,9 @@ public class MainActivity extends AppCompatActivity {
 
             return true;
         });
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference root = database.getReference();
     }
 
     private void createNotificationChannel() {
@@ -287,5 +293,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    @Override
+    public void onCallBack() {
+        if (navItemIndex == 0) {
+            OverviewFragment overviewFragment = (OverviewFragment) getSupportFragmentManager().findFragmentByTag(CURRENT_TAG);
+            overviewFragment.refreshRecyclerView();
+        }
     }
 }
