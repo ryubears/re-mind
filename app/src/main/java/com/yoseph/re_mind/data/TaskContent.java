@@ -14,12 +14,12 @@ import java.util.Map;
  */
 public class TaskContent {
 
-    private static final int TYPE_GENERAL = 0;
-    private static final int TYPE_LIST = 1;
-    private static final int TYPE_SHARED = 2;
-    private static final int TYPE_LOCATION = 3;
-    private static final int TYPE_WEATHER = 4;
-    private static final int TYPE_GLOBAL = 5;
+    public static final int TYPE_GENERAL = 0;
+    public static final int TYPE_LIST = 1;
+    public static final int TYPE_SHARED = 2;
+    public static final int TYPE_LOCATION = 3;
+    public static final int TYPE_WEATHER = 4;
+    public static final int TYPE_GLOBAL = 5;
 
 
     /**

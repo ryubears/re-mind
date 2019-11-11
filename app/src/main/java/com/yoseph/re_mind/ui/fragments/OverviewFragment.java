@@ -11,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -23,6 +22,9 @@ import java.util.List;
 
 public class OverviewFragment extends Fragment {
 
+    private RecyclerView recyclerView;
+    private SimpleItemRecyclerViewAdapter adapter;
+
     public OverviewFragment() {
         // Required empty public constructor.
     }
@@ -32,15 +34,18 @@ public class OverviewFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_overview, container, false);
 
-        View recyclerView = rootView.findViewById(R.id.task_list);
+        recyclerView = rootView.findViewById(R.id.task_list);
         assert recyclerView != null;
-        setupRecyclerView((RecyclerView) recyclerView);
+
+        adapter = new OverviewFragment.SimpleItemRecyclerViewAdapter(TaskContent.ITEMS);
+        recyclerView.setAdapter(adapter);
 
         return rootView;
     }
 
-    private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        recyclerView.setAdapter(new OverviewFragment.SimpleItemRecyclerViewAdapter(TaskContent.ITEMS));
+
+    public void refreshRecyclerView() {
+        adapter.notifyDataSetChanged();
     }
 
     public static class SimpleItemRecyclerViewAdapter
@@ -97,7 +102,6 @@ public class OverviewFragment extends Fragment {
                 notifyItemRemoved(mId);
                 notifyItemRangeChanged(mId, getItemCount());
             }
-
 
             ViewHolder(View view) {
                 super(view);
