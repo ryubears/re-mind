@@ -106,7 +106,7 @@ public class TaskDetailActivity extends AppCompatActivity implements DetailButto
         } else if (type == SET_CATEGORY) {
             f = SetCategoryListDialogFragment.newInstance("Set Category", "For filtering actions", R.drawable.category, CategoryContent.getTitles(), CategoryContent.getIcons());
         } else if (type == SET_LOCATION) {
-            String[] optionTitles = new String[] { "Grocery", "Pharmacy", "Home Improvement", "Search" };
+            String[] optionTitles = new String[] { "Grocery", "Pharmacy", "Home Improvement" };
             int[] optionIcons = new int[] { R.drawable.category, R.drawable.event, R.drawable.category, R.drawable.add_black };
             f = SetCategoryListDialogFragment.newInstance("Set Location", "Be reminded when you travel nearby", R.drawable.location, optionTitles, optionIcons);
         }

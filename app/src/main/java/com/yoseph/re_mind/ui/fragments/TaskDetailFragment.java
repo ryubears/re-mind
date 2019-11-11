@@ -10,6 +10,7 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -145,24 +146,46 @@ public class TaskDetailFragment extends Fragment {
         }
 
         if (requestCode == TaskDetailActivity.SET_CATEGORY) {
-            String result = (String) data.getSerializableExtra(SetCategoryListDialogFragment.SELECTION);
+            if (data.hasExtra(SetCategoryListDialogFragment.CREATE_NEW)) {
+                DialogFragment f = TypeItemBottomSheetListDialogFragment.newInstance("Add new sub task");
+                f.setTargetFragment(this, TaskDetailActivity.SET_CATEGORY);
+                f.show(this.getFragmentManager(), "typeNewCategory");
+            } else {
 
-            for (CategoryContent.CategoryItem item: CategoryContent.CATEGORIES) {
-                if (item.title.equals(result)) {
-                    mItem.setCategory(item);
-                    setCategoryButton.setValueRender(result);
+                String result = (String) data.getSerializableExtra(SetCategoryListDialogFragment.TEXT);
+
+                for (CategoryContent.CategoryItem item: CategoryContent.CATEGORIES) {
+                    if (item.title.equals(result)) {
+                        mItem.setCategory(item);
+                        setCategoryButton.setValueRender(result);
+                        return;
+                    }
                 }
+
+                CategoryContent.CategoryItem item = new CategoryContent.CategoryItem(result, R.drawable.category);
+                CategoryContent.CATEGORIES.add(item);
+                mItem.setCategory(item);
+
+                setCategoryButton.setValueRender(result);
             }
+
         }
 
         if (requestCode == TaskDetailActivity.SET_LOCATION) {
-            String result = (String) data.getSerializableExtra(SetCategoryListDialogFragment.SELECTION);
-            mItem.setLocation(result);
-            setLocationButton.setValueRender(result);
+            if (data.hasExtra(SetCategoryListDialogFragment.CREATE_NEW)) {
+                DialogFragment f = TypeItemBottomSheetListDialogFragment.newInstance("Search for a location");
+                f.setTargetFragment(this, TaskDetailActivity.SET_LOCATION);
+                f.show(this.getFragmentManager(), "typeNewLocation");
+            } else {
+
+                String result = (String) data.getSerializableExtra(SetCategoryListDialogFragment.TEXT);
+                mItem.setLocation(result);
+                setLocationButton.setValueRender(result);
+            }
         }
 
         if (requestCode == TaskDetailActivity.SET_REPEAT) {
-            String result = (String) data.getSerializableExtra(SetCategoryListDialogFragment.SELECTION);
+            String result = (String) data.getSerializableExtra(SetCategoryListDialogFragment.TEXT);
             mItem.setRepeat(result);
             repeatButton.setValueRender(result);
         }
