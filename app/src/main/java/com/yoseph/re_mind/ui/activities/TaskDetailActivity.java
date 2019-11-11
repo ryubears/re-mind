@@ -102,7 +102,7 @@ public class TaskDetailActivity extends AppCompatActivity implements DetailButto
         if (type == SET_DATE){
             f = new DatePickerFragment();
         } else if (type == SET_SHARE) {
-
+            f = TypeItemBottomSheetListDialogFragment.newInstance("Email to share task with");
         } else if (type == SET_CATEGORY) {
             f = SetCategoryListDialogFragment.newInstance("Set Category", "For filtering actions", R.drawable.category, CategoryContent.getTitles(), CategoryContent.getIcons());
         } else if (type == SET_LOCATION) {
