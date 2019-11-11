@@ -168,7 +168,7 @@ public class TaskDetailFragment extends Fragment {
         }
 
         if (requestCode == TaskDetailActivity.SET_SHARE) {
-            String result = (String) data.getSerializableExtra(DatePickerFragment.DATE);
+            String result = (String) data.getSerializableExtra(TypeItemBottomSheetListDialogFragment.TEXT);
             mItem.setShare(result);
             shareButton.setValueRender(result);
         }
