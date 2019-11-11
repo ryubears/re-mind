@@ -52,37 +52,37 @@
                     android:id="@+id/chip6"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Milk"/>
+                    android:text="@string/milk" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chip5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Eggs"/>
+                    android:text="@string/eggs" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chip4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Oreos"/>
+                    android:text="@string/oreos" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chip3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Coffee"/>
+                    android:text="@string/coffee" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chip2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Chicken"/>
+                    android:text="@string/chicken" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chip"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Tea"/>
+                    android:text="@string/tea" />
 
             </com.google.android.material.chip.ChipGroup>
 
