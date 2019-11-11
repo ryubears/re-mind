@@ -48,7 +48,7 @@ public class BottomSheetFragment extends BottomSheetDialogFragment {
                     TaskContent.addItem(new TaskContent.TaskItem("6",newTask,  "", 0));
                 }
 
-                
+
 
             }
         });
