@@ -41,7 +41,7 @@ public class TaskContent {
         addItem(new TaskItem("5","Drop off take home midterm",  "Arriving at Keller Hall", TYPE_LOCATION));
     }
 
-    private static void addItem(TaskItem item) {
+    public static void addItem(TaskItem item) {
         ITEMS.add(item);
         ITEM_MAP.put(item.id, item);
     }
@@ -87,6 +87,8 @@ public class TaskContent {
         public String location;
 
         public final int type;
+
+        public final List<String> subList = new ArrayList<>();
 
 
         public TaskItem(String id, String title, String details, int type) {

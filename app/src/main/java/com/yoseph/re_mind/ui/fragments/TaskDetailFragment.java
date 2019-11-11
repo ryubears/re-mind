@@ -6,17 +6,23 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.appbar.CollapsingToolbarLayout;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 import com.yoseph.re_mind.R;
 import com.yoseph.re_mind.data.CategoryContent;
 import com.yoseph.re_mind.data.TaskContent;
 import com.yoseph.re_mind.ui.activities.TaskDetailActivity;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * A fragment representing a single Task detail screen.
@@ -39,6 +45,9 @@ public class TaskDetailFragment extends Fragment {
     private DetailButtonFragment repeatButton;
     private DetailButtonFragment shareButton;
     private DetailButtonFragment setCategoryButton;
+
+    private ChipGroup chips;
+    private RecyclerView subItemsViews;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -92,6 +101,28 @@ public class TaskDetailFragment extends Fragment {
                     .add(R.id.actionButtons, shareButton)
                     .add(R.id.actionButtons, setCategoryButton)
                     .commit();
+
+
+            subItemsViews = rootView.findViewById(R.id.sub_task_list);
+            assert subItemsViews != null;
+            setupRecyclerView(subItemsViews);
+
+            chips = rootView.findViewById(R.id.quick_add_chips);
+            for(int index = 0; index < chips.getChildCount(); index++) {
+                View nextChild = chips.getChildAt(index);
+
+                if (nextChild instanceof Chip) {
+                    nextChild.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            mItem.subList.add(((Chip) view).getText().toString());
+                            chips.removeView(nextChild);
+                            subItemsViews.getAdapter().notifyDataSetChanged();
+                        }
+                    });
+
+                }
+            }
         }
 
 
@@ -137,9 +168,80 @@ public class TaskDetailFragment extends Fragment {
         }
 
         if (requestCode == TaskDetailActivity.SET_SHARE) {
-            String result = (String) data.getSerializableExtra(DatePickerFragment.DATE);
+            String result = (String) data.getSerializableExtra(TypeItemBottomSheetListDialogFragment.TEXT);
             mItem.setShare(result);
             shareButton.setValueRender(result);
+        }
+
+        if (requestCode == TaskDetailActivity.ADD_SUB_TASK) {
+            String result = (String) data.getSerializableExtra(TypeItemBottomSheetListDialogFragment.TEXT);
+            mItem.subList.add(result);
+            subItemsViews.getAdapter().notifyDataSetChanged();
+        }
+    }
+
+    private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
+        recyclerView.setAdapter(new TaskDetailFragment.SimpleItemRecyclerViewAdapter(mItem.subList));
+    }
+
+    public static class SimpleItemRecyclerViewAdapter
+            extends RecyclerView.Adapter<TaskDetailFragment.SimpleItemRecyclerViewAdapter.ViewHolder> {
+        private List<String> mValues;
+//        private final View.OnClickListener mOnClickListener = view -> {
+//            TaskContent.TaskItem item = (TaskContent.TaskItem) view.getTag();
+//
+//            Context context = view.getContext();
+//            Intent intent = new Intent(context, TaskDetailActivity.class);
+//            intent.putExtra(TaskDetailFragment.ARG_ITEM_ID, item.id);
+//
+//            context.startActivity(intent);
+//        };
+
+        SimpleItemRecyclerViewAdapter(List<String> items) {
+            mValues = items;
+        }
+
+        @Override
+        public TaskDetailFragment.SimpleItemRecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.sub_items, parent, false);
+            return new TaskDetailFragment.SimpleItemRecyclerViewAdapter.ViewHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(final TaskDetailFragment.SimpleItemRecyclerViewAdapter.ViewHolder holder, int position) {
+            holder.mTitle.setText(mValues.get(position));
+
+            holder.itemView.setTag(mValues.get(position));
+//            holder.itemView.setOnClickListener(mOnClickListener);
+            holder.mId = position;
+        }
+
+        @Override
+        public int getItemCount() {
+            return mValues.size();
+        }
+
+        class ViewHolder extends RecyclerView.ViewHolder {
+            final TextView mTitle;
+            final RadioButton mButton;
+            int mId;
+
+            public void onSelect(RadioButton mButton) {
+                mValues.remove(mId);
+                mButton.setChecked(false);
+                notifyItemRemoved(mId);
+                notifyItemRangeChanged(mId, getItemCount());
+
+            }
+
+
+            ViewHolder(View view) {
+                super(view);
+                mTitle = view.findViewById(R.id.title);
+                mButton = view.findViewById(R.id.radioButton);
+                mButton.setOnClickListener(view1 -> onSelect(mButton));
+            }
         }
     }
 }

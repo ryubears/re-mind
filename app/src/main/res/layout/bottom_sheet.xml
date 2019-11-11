@@ -61,8 +61,8 @@
             android:background="@drawable/bottom_sheet_item_background">
 
             <ImageView
-                android:layout_width="32dp"
-                android:layout_height="32dp"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
                 android:layout_marginBottom="8dp"
                 android:src="@drawable/no_alert"
                 android:scaleType="centerCrop" />
@@ -86,8 +86,8 @@
             android:padding="8dp">
 
             <ImageView
-                android:layout_width="32dp"
-                android:layout_height="32dp"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
                 android:layout_marginBottom="8dp"
                 android:src="@drawable/time_alert"
                 android:scaleType="centerCrop" />
@@ -111,8 +111,8 @@
             android:padding="8dp">
 
             <ImageView
-                android:layout_width="32dp"
-                android:layout_height="32dp"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
                 android:layout_marginBottom="8dp"
                 android:src="@drawable/place_alert"
                 android:scaleType="centerCrop" />

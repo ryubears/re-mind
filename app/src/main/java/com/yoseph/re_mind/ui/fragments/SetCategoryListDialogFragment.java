@@ -77,7 +77,6 @@ public class SetCategoryListDialogFragment extends BottomSheetDialogFragment {
         final ImageView icon;
 
         ViewHolder(LayoutInflater inflater, ViewGroup parent) {
-            // TODO: Customize the item layout
             super(inflater.inflate(R.layout.fragment_setcategory_list_dialog_item, parent, false));
             text = itemView.findViewById(R.id.option_text);
             icon = itemView.findViewById(R.id.option_icon);
