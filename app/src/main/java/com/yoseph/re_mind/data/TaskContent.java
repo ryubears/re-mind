@@ -41,7 +41,7 @@ public class TaskContent {
         addItem(new TaskItem("5","Drop off take home midterm",  "Arriving at Keller Hall", TYPE_LOCATION));
     }
 
-    private static void addItem(TaskItem item) {
+    public static void addItem(TaskItem item) {
         ITEMS.add(item);
         ITEM_MAP.put(item.id, item);
     }
