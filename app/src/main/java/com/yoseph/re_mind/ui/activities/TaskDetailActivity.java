@@ -4,16 +4,22 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.google.android.material.chip.Chip;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.yoseph.re_mind.R;
 import com.yoseph.re_mind.ui.fragments.OverviewFragment;
 import com.yoseph.re_mind.ui.fragments.TaskDetailFragment;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * An activity representing a single Task detail screen. This
@@ -26,6 +32,8 @@ public class TaskDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_detail);
         Toolbar toolbar = findViewById(R.id.detail_toolbar);
+        Chip chip = findViewById(R.id.chip);
+        ListView lv = findViewById(R.id.subItems);
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -42,6 +50,20 @@ public class TaskDetailActivity extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+
+
+        final List<String> sub_list = new ArrayList<>();
+        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, sub_list);
+        lv.setAdapter(arrayAdapter);
+
+        chip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sub_list.add((String) chip.getText());
+                lv.setVisibility(view.VISIBLE);
+                arrayAdapter.notifyDataSetChanged();
+            }
+        });
 
         // savedInstanceState is non-null when there is fragment state
         // saved from previous configurations of this activity

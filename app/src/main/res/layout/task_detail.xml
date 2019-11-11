@@ -198,6 +198,18 @@
         android:layout_height="wrap_content"
         android:layout_margin="8dp" />
 
+    <View
+        android:id="@+id/View"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginHorizontal="@dimen/task_padding"
+        android:background="#c0c0c0" />
+
+    <include
+        layout="@layout/sub_items"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
 
 
 </LinearLayout>
