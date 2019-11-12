@@ -1,9 +1,9 @@
 package com.yoseph.re_mind.ui.activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,6 +26,10 @@ import com.yoseph.re_mind.ui.fragments.TypeItemBottomSheetListDialogFragment;
  */
 public class TaskDetailActivity extends AppCompatActivity implements DetailButtonFragment.OnFragmentInteractionListener {
 
+    public static final String TEXT = "TEXT";
+
+    public static boolean isRepeat = false;
+
     public static final int SET_DATE = 0;
     public static final int SET_LOCATION = 1;
     public static final int SET_REPEAT = 2;
@@ -45,14 +49,10 @@ public class TaskDetailActivity extends AppCompatActivity implements DetailButto
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                DialogFragment f = TypeItemBottomSheetListDialogFragment.newInstance("Add new sub task");
-                f.setTargetFragment(fragment, ADD_SUB_TASK);
-                f.show(getSupportFragmentManager(), "addSubTask");
-            }
+        fab.setOnClickListener(view -> {
+            DialogFragment dialogFragment = TypeItemBottomSheetListDialogFragment.newInstance("Add new sub task");
+            dialogFragment.setTargetFragment(fragment, ADD_SUB_TASK);
+            dialogFragment.show(getSupportFragmentManager(), "addSubTask");
         });
 
         // Show the Up button in the action bar.
@@ -109,6 +109,15 @@ public class TaskDetailActivity extends AppCompatActivity implements DetailButto
             String[] optionTitles = new String[] { "Grocery", "Pharmacy", "Home Improvement" };
             int[] optionIcons = new int[] { R.drawable.category, R.drawable.event, R.drawable.category, R.drawable.add_black };
             dialogFragment = SetCategoryListDialogFragment.newInstance("Set Location", "Be reminded when you travel nearby", R.drawable.location, optionTitles, optionIcons);
+        } else if (type == SET_REPEAT) {
+            String repeatString = "";
+            isRepeat = !isRepeat;
+            if (isRepeat) {
+                repeatString = "On";
+            }
+            Intent intent = new Intent();
+            intent.putExtra(TEXT, repeatString);
+            fragment.onActivityResult(type, Activity.RESULT_OK, intent);
         }
 
         if (dialogFragment != null) {

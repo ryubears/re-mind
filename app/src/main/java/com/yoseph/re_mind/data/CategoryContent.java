@@ -42,7 +42,6 @@ public class CategoryContent {
         public final String title;
         public final int icon;
 
-
         public CategoryItem(String title, int icon) {
             this.title = title;
             this.icon = icon;
