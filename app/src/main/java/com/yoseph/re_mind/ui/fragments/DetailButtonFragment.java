@@ -22,8 +22,7 @@ import com.yoseph.re_mind.ui.activities.TaskDetailActivity;
  * create an instance of this fragment.
  */
 public class DetailButtonFragment extends Fragment implements View.OnClickListener {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+
     private static final String ARG_TITLE = "title";
     private static final String ARG_ICON = "icon";
     private static final String ARG_VALUE = "value";
@@ -74,26 +73,20 @@ public class DetailButtonFragment extends Fragment implements View.OnClickListen
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_detail_button, container, false);
-        v.setOnClickListener(this);
+        View view = inflater.inflate(R.layout.fragment_detail_button, container, false);
+        view.setOnClickListener(this);
         if (title != null) {
-            ((TextView) v.findViewById(R.id.button_title)).setText(title);
+            ((TextView) view.findViewById(R.id.button_title)).setText(title);
         }
         if (value != null) {
-            ((TextView) v.findViewById(R.id.button_value)).setText(value);
+            ((TextView) view.findViewById(R.id.button_value)).setText(value);
         }
         if (icon != 0) {
-            ((ImageView) v.findViewById(R.id.button_icon)).setImageResource(icon);
+            ((ImageView) view.findViewById(R.id.button_icon)).setImageResource(icon);
         }
-        return v;
+        return view;
     }
 
-
-    public void onButtonPressed() {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(action);
-        }
-    }
 
     public void setValueRender(String value) {
         ((TextView) this.getView().findViewById(R.id.button_value)).setText(value);
@@ -112,8 +105,9 @@ public class DetailButtonFragment extends Fragment implements View.OnClickListen
 
     @Override
     public void onClick(View v) {
-        //do what you want to do when button is clicked
-        onButtonPressed();
+        if (mListener != null) {
+            mListener.onFragmentInteraction(action);
+        }
     }
 
     @Override

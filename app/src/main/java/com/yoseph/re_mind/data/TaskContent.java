@@ -2,6 +2,7 @@ package com.yoseph.re_mind.data;
 
 import com.yoseph.re_mind.R;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,7 +21,6 @@ public class TaskContent {
     public static final int TYPE_LOCATION = 3;
     public static final int TYPE_WEATHER = 4;
     public static final int TYPE_GLOBAL = 5;
-
 
     /**
      * An array of sample (dummy) items.
@@ -64,32 +64,23 @@ public class TaskContent {
         }
     }
 
-    private static String makeDetails(int position) {
-        StringBuilder builder = new StringBuilder();
-        builder.append("Details about Item: ").append(position);
-        for (int i = 0; i < position; i++) {
-            builder.append("\nMore details information here.");
-        }
-        return builder.toString();
-    }
-
     /**
      * A dummy item representing a piece of content.
      */
-    public static class TaskItem {
-        public final String id;
-        public final String title;
-        public final String details;
+    public static class TaskItem implements Serializable {
+        public String id = "0";
+        public String title = "Title";
+        public String details = "Details";
         public String dueDate;
         public CategoryContent.CategoryItem category;
         public String repeat;
         public String share;
         public String location;
-
-        public final int type;
+        public int type = 0;
 
         public final List<String> subList = new ArrayList<>();
 
+        public TaskItem() {}
 
         public TaskItem(String id, String title, String details, int type) {
             this.id = id;

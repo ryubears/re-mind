@@ -11,9 +11,16 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.yoseph.re_mind.R;
 import com.yoseph.re_mind.data.TaskContent;
 import com.yoseph.re_mind.ui.activities.TaskDetailActivity;
@@ -24,6 +31,7 @@ public class OverviewFragment extends Fragment {
 
     private RecyclerView recyclerView;
     private SimpleItemRecyclerViewAdapter adapter;
+    private List<TaskContent.TaskItem> items;
 
     public OverviewFragment() {
         // Required empty public constructor.
@@ -37,12 +45,51 @@ public class OverviewFragment extends Fragment {
         recyclerView = rootView.findViewById(R.id.task_list);
         assert recyclerView != null;
 
-        adapter = new OverviewFragment.SimpleItemRecyclerViewAdapter(TaskContent.ITEMS);
+        items = TaskContent.ITEMS;
+        adapter = new OverviewFragment.SimpleItemRecyclerViewAdapter(items);
         recyclerView.setAdapter(adapter);
 
         return rootView;
     }
 
+
+    public void addFirebaseListeners(String userId) {
+        // Get a Firebase Realtime Database reference.
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference root = database.getReference("users/" + userId + "/shared");
+
+        // Add Listener
+        root.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                TaskContent.TaskItem taskItem = dataSnapshot.getValue(TaskContent.TaskItem.class);
+                items.add(taskItem);
+                adapter.notifyItemInserted(items.size() - 1);
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                TaskContent.TaskItem taskItem = dataSnapshot.getValue(TaskContent.TaskItem.class);
+                items.add(taskItem);
+                adapter.notifyItemInserted(items.size() - 1);
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
 
     public void refreshRecyclerView() {
         adapter.notifyDataSetChanged();

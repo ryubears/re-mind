@@ -3,7 +3,6 @@ package com.yoseph.re_mind.ui.fragments;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.telecom.Call;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,11 +17,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.yoseph.re_mind.R;
 import com.yoseph.re_mind.data.CategoryContent;
 import com.yoseph.re_mind.data.TaskContent;
 import com.yoseph.re_mind.ui.activities.TaskDetailActivity;
-import com.yoseph.re_mind.ui.interfaces.CallBackListener;
 import com.yoseph.re_mind.ui.interfaces.TaskDetailCallBackListener;
 
 import java.util.Date;
@@ -176,7 +176,6 @@ public class TaskDetailFragment extends Fragment implements TaskDetailCallBackLi
                 dialogFragment.setTargetFragment(this, TaskDetailActivity.SET_LOCATION);
                 dialogFragment.show(this.getFragmentManager(), "typeNewLocation");
             } else {
-
                 String result = (String) data.getSerializableExtra(SetCategoryListDialogFragment.TEXT);
                 mItem.setLocation(result);
                 setLocationButton.setValueRender(result);
@@ -193,6 +192,12 @@ public class TaskDetailFragment extends Fragment implements TaskDetailCallBackLi
             String result = (String) data.getSerializableExtra(TypeItemBottomSheetListDialogFragment.TEXT);
             mItem.setShare(result);
             shareButton.setValueRender(result);
+
+            // Add reminder to shared list.
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            DatabaseReference root = database.getReference("users");
+            String[] resultSplit = result.split("@");
+            root.child(resultSplit[0] + "/shared/0").setValue(mItem);
         }
 
         if (requestCode == TaskDetailActivity.ADD_SUB_TASK) {
@@ -278,9 +283,8 @@ public class TaskDetailFragment extends Fragment implements TaskDetailCallBackLi
             public void onSelect(RadioButton mButton) {
                 mValues.remove(mId);
                 mButton.setChecked(false);
-                notifyItemRemoved(mId);
-                notifyItemRangeChanged(mId, getItemCount());
 
+                notifyDataSetChanged();
                 callBackListener.onCallBack(mTitle.getText().toString());
             }
 

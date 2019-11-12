@@ -11,6 +11,7 @@ import android.os.Handler;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -24,8 +25,11 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.yoseph.re_mind.R;
 import com.yoseph.re_mind.receiver.NotificationActionReceiver;
 import com.yoseph.re_mind.ui.fragments.BottomSheetFragment;
@@ -36,7 +40,9 @@ import com.yoseph.re_mind.ui.interfaces.CallBackListener;
 
 public class MainActivity extends AppCompatActivity implements CallBackListener {
 
-
+    private static final String USER_YEHYUN = "ryuxx115";
+    private static final String USER_DONGHA = "kangx637";
+    private static String userId;
 
     // View references.
     private DrawerLayout drawerLayout;
@@ -134,7 +140,30 @@ public class MainActivity extends AppCompatActivity implements CallBackListener 
         });
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference root = database.getReference();
+        DatabaseReference root = database.getReference("id");
+        root.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                long id = (long) dataSnapshot.getValue();
+                if (id % 2 == 0) {
+                    userId = USER_YEHYUN;
+                    Toast.makeText(getApplicationContext(), "User: ryuxx115", Toast.LENGTH_LONG).show();
+                } else {
+                    userId = USER_DONGHA;
+                    Toast.makeText(getApplicationContext(), "User: kangx637", Toast.LENGTH_LONG).show();
+                }
+
+                OverviewFragment overviewFragment = (OverviewFragment) getSupportFragmentManager().findFragmentByTag(TAG_OVERVIEW);
+                overviewFragment.addFirebaseListeners(userId);
+
+                root.setValue(id + 1);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void createNotificationChannel() {
