@@ -142,7 +142,6 @@
         app:layout_constraintTop_toBottomOf="@+id/globalSwitch"
         ></Switch>
 
-
     <ImageView
         android:id="@+id/ShareIcon"
         android:layout_width="24dp"
