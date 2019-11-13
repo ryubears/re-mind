@@ -126,6 +126,7 @@ public class TaskDetailFragment extends Fragment implements TaskDetailCallBackLi
                 }
             }
         }
+        onCallBack(null);
 
         return rootView;
     }
@@ -191,6 +192,7 @@ public class TaskDetailFragment extends Fragment implements TaskDetailCallBackLi
         if (requestCode == TaskDetailActivity.SET_SHARE) {
             String result = (String) data.getSerializableExtra(TypeItemBottomSheetListDialogFragment.TEXT);
             mItem.setShare(result);
+            mItem.id = "s" + mItem.id;
             shareButton.setValueRender(result);
 
             // Add reminder to shared list.
