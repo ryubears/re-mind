@@ -19,11 +19,12 @@ import com.yoseph.re_mind.ui.interfaces.CallBackListener;
 
 public class BottomSheetFragment extends BottomSheetDialogFragment {
 
+    private int id= 100;
     private int alertType = TaskContent.TYPE_GENERAL;
-    private String details;
 
     private ImageButton addItemButton;
     private EditText addItemEditText;
+    private EditText descriptionEditText;
 
     private LinearLayout noAlertLayout;
     private LinearLayout timeAlertLayout;
@@ -44,6 +45,7 @@ public class BottomSheetFragment extends BottomSheetDialogFragment {
 
         addItemButton   = view.findViewById(R.id.add_reminder_button);
         addItemEditText = view.findViewById(R.id.add_reminder_edittext);
+        descriptionEditText = view.findViewById(R.id.add_reminder_description_edittext);
 
         noAlertLayout = view.findViewById(R.id.no_alert_layout);
         timeAlertLayout = view.findViewById(R.id.time_alert_layout);
@@ -51,8 +53,10 @@ public class BottomSheetFragment extends BottomSheetDialogFragment {
 
         addItemButton.setOnClickListener(view1 -> {
             // add the addItemEditText to the Task content
+            int id = 100 + (int)(Math.random() * ((1000 - 100) + 1));
             String newTask = addItemEditText.getText().toString();
-            TaskContent.TaskItem taskItem = new TaskContent.TaskItem("6", newTask, "No Description", alertType);
+            String details = descriptionEditText.getText().toString();
+            TaskContent.TaskItem taskItem = new TaskContent.TaskItem(String.valueOf(id), newTask, "No Description", alertType);
             if (newTask.isEmpty()) {
                 return;
             } else {
