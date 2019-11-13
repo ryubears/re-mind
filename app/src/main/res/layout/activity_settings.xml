@@ -126,7 +126,6 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/globalSwitch" />
 
-
     <ImageView
         android:id="@+id/ShareIcon"
         android:layout_width="24dp"
