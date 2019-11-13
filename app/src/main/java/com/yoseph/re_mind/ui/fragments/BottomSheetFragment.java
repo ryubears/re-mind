@@ -20,6 +20,7 @@ import com.yoseph.re_mind.ui.interfaces.CallBackListener;
 public class BottomSheetFragment extends BottomSheetDialogFragment {
 
     private int alertType = TaskContent.TYPE_GENERAL;
+    private String details;
 
     private ImageButton addItemButton;
     private EditText addItemEditText;
@@ -51,10 +52,14 @@ public class BottomSheetFragment extends BottomSheetDialogFragment {
         addItemButton.setOnClickListener(view1 -> {
             // add the addItemEditText to the Task content
             String newTask = addItemEditText.getText().toString();
+            TaskContent.TaskItem taskItem = new TaskContent.TaskItem("6", newTask, "No Description", alertType);
             if (newTask.isEmpty()) {
                 return;
             } else {
-                TaskContent.addItem(new TaskContent.TaskItem("6", newTask,  "No Description", alertType));
+                if (details != null && !details.isEmpty()) {
+                    taskItem.details = details;
+                }
+                TaskContent.addItem(taskItem);
 
                 if(callBackListener != null) {
                     callBackListener.onCallBack();

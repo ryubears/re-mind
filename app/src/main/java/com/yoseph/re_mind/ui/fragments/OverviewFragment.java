@@ -31,7 +31,6 @@ public class OverviewFragment extends Fragment {
 
     private RecyclerView recyclerView;
     private SimpleItemRecyclerViewAdapter adapter;
-    private List<TaskContent.TaskItem> items;
 
     public OverviewFragment() {
         // Required empty public constructor.
@@ -45,8 +44,7 @@ public class OverviewFragment extends Fragment {
         recyclerView = rootView.findViewById(R.id.task_list);
         assert recyclerView != null;
 
-        items = TaskContent.ITEMS;
-        adapter = new OverviewFragment.SimpleItemRecyclerViewAdapter(items);
+        adapter = new OverviewFragment.SimpleItemRecyclerViewAdapter(TaskContent.ITEMS);
         recyclerView.setAdapter(adapter);
 
         return rootView;
@@ -63,15 +61,15 @@ public class OverviewFragment extends Fragment {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 TaskContent.TaskItem taskItem = dataSnapshot.getValue(TaskContent.TaskItem.class);
-                items.add(taskItem);
-                adapter.notifyItemInserted(items.size() - 1);
+                TaskContent.addItem(taskItem);
+                adapter.notifyItemInserted(TaskContent.ITEMS.size() - 1);
             }
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 TaskContent.TaskItem taskItem = dataSnapshot.getValue(TaskContent.TaskItem.class);
-                items.add(taskItem);
-                adapter.notifyItemInserted(items.size() - 1);
+                TaskContent.addItem(taskItem);
+                adapter.notifyItemInserted(TaskContent.ITEMS.size() - 1);
             }
 
             @Override
@@ -103,6 +101,7 @@ public class OverviewFragment extends Fragment {
 
             Context context = view.getContext();
             Intent intent = new Intent(context, TaskDetailActivity.class);
+
             intent.putExtra(TaskDetailFragment.ARG_ITEM_ID, item.id);
 
             context.startActivity(intent);
