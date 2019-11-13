@@ -18,46 +18,279 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
+
+    <TextView
+        android:id="@+id/textViewVersion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="20dp"
+        android:text="Version"
+        android:textColor="#2C2C2C"
+        android:textSize="24sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        ></TextView>
+
+    <TextView
+        android:id="@+id/VersionNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="0dp"
+        android:text="2019.1.0.0"
+        android:textColor="#949494"
+        android:textSize="12sp"
+        app:layout_constraintTop_toBottomOf="@id/textViewVersion"
+        app:layout_constraintLeft_toLeftOf="parent"
+        ></TextView>
+
+
+    <ImageView
+        android:id="@+id/AppLogo"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:src="@drawable/logo_imperialred"
+        android:layout_marginRight="24dp"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="20dp"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        ></ImageView>
+
+
+    <View
+        android:id="@+id/GeneralLine1"
+        android:layout_width="fill_parent"
+        android:layout_height="2dp"
+        android:layout_marginTop="12dp"
+        app:layout_constraintTop_toBottomOf="@+id/VersionNumber"
+        android:background="#D8D8D8"></View>
+
+
+
+<!--    General-->
+
+    <ImageView
+        android:id="@+id/GlobalIcon"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:src="@drawable/globe2"
+        android:layout_marginStart="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="24dp"
+        app:layout_constraintTop_toBottomOf="@id/GeneralLine1">
+    </ImageView>
+
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="36dp"
-        android:layout_marginTop="100dp"
         android:text="Enable Global Todos"
         android:textColor="#2C2C2C"
         android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="36dp"
-        android:layout_marginTop="165dp"
-        android:text="Enable Weather Todos"
-        android:textColor="#2C2C2C"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Switch
-        android:id="@+id/weatherSwitch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="320dp"
-        android:layout_marginTop="165dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_marginLeft="16dp"
+        app:layout_constraintLeft_toRightOf="@+id/GlobalIcon"
+        android:layout_marginTop="24dp"
+        app:layout_constraintTop_toBottomOf="@+id/GeneralLine1"
+        ></TextView>
 
     <Switch
         android:id="@+id/globalSwitch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="320dp"
-        android:layout_marginTop="96dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_marginRight="24dp"
+        android:layout_marginTop="24dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/GeneralLine1"
+        ></Switch>
 
+
+    <ImageView
+        android:id="@+id/UmbrellaIcon"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:src="@drawable/umbrella_setting"
+        android:layout_marginStart="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="24dp"
+        app:layout_constraintTop_toBottomOf="@id/GlobalIcon">
+    </ImageView>
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        app:layout_constraintLeft_toRightOf="@+id/UmbrellaIcon"
+        android:layout_marginTop="24dp"
+        app:layout_constraintTop_toBottomOf="@+id/textView2"
+        android:text="Enable Weather Todos"
+        android:textColor="#2C2C2C"
+        android:textSize="18sp"
+
+        ></TextView>
+
+
+
+    <Switch
+        android:id="@+id/weatherSwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="24dp"
+        android:layout_marginTop="24dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/globalSwitch"
+        ></Switch>
+
+
+    <ImageView
+        android:id="@+id/ShareIcon"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:src="@drawable/sharegroup"
+        android:layout_marginStart="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="24dp"
+        app:layout_constraintTop_toBottomOf="@id/UmbrellaIcon">
+    </ImageView>
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        app:layout_constraintLeft_toRightOf="@+id/ShareIcon"
+        android:layout_marginTop="24dp"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        android:text="Enable Share with Others"
+        android:textColor="#2C2C2C"
+        android:textSize="18sp"
+
+        ></TextView>
+
+
+
+    <Switch
+        android:id="@+id/shareSwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="24dp"
+        android:layout_marginTop="24dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/weatherSwitch"
+        ></Switch>
+
+
+    <ImageView
+        android:id="@+id/NotificationIcon"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:src="@drawable/notification"
+        android:layout_marginStart="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="24dp"
+        app:layout_constraintTop_toBottomOf="@id/ShareIcon">
+    </ImageView>
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        app:layout_constraintLeft_toRightOf="@+id/ShareIcon"
+        android:layout_marginTop="24dp"
+        app:layout_constraintTop_toBottomOf="@+id/textView3"
+        android:text="Enable Notification"
+        android:textColor="#2C2C2C"
+        android:textSize="18sp"
+
+        ></TextView>
+
+
+
+    <Switch
+        android:id="@+id/notificationSwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="24dp"
+        android:layout_marginTop="24dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/shareSwitch"
+        ></Switch>
+
+
+    <ImageView
+        android:id="@+id/LocationIcon"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:src="@drawable/location2"
+        android:layout_marginStart="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="24dp"
+        app:layout_constraintTop_toBottomOf="@id/NotificationIcon">
+    </ImageView>
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        app:layout_constraintLeft_toRightOf="@+id/LocationIcon"
+        android:layout_marginTop="24dp"
+        app:layout_constraintTop_toBottomOf="@+id/textView4"
+        android:text="Enable Notification"
+        android:textColor="#2C2C2C"
+        android:textSize="18sp"
+
+        ></TextView>
+
+
+
+    <Switch
+        android:id="@+id/locationSwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="24dp"
+        android:layout_marginTop="24dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/notificationSwitch"
+        ></Switch>
+
+
+
+    <View
+        android:id="@+id/GeneralLine2"
+        android:layout_width="fill_parent"
+        android:layout_height="2dp"
+        android:layout_marginTop="24dp"
+        app:layout_constraintTop_toBottomOf="@+id/LocationIcon"
+        android:background="#D8D8D8"></View>
+
+
+    <TextView
+        android:id="@+id/language"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="24dp"
+        app:layout_constraintTop_toBottomOf="@+id/GeneralLine2"
+        android:text="Language"
+        android:textColor="#2C2C2C"
+        android:textSize="20sp"
+        ></TextView>
+
+
+    <TextView
+        android:id="@+id/languageEnglish"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="24dp"
+        app:layout_constraintTop_toBottomOf="@+id/GeneralLine2"
+        android:text="English"
+        android:textColor="#919191"
+        android:textSize="18sp"
+        ></TextView>
 </androidx.constraintlayout.widget.ConstraintLayout>
