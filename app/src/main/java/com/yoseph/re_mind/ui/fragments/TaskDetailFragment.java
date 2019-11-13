@@ -126,6 +126,8 @@ public class TaskDetailFragment extends Fragment implements TaskDetailCallBackLi
                 }
             }
         }
+
+        // Refresh subitems list.
         onCallBack(null);
 
         return rootView;
