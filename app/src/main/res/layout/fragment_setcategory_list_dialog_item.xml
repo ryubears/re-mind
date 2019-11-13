@@ -15,17 +15,15 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:gravity="center_vertical"
-        android:layout_marginHorizontal="@dimen/task_padding"
-        android:layout_marginVertical="@dimen/task_detail_spacing"
-
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
         android:orientation="horizontal">
 
         <ImageView
-            android:layout_width="@dimen/detail_icon_size"
-            android:layout_height="@dimen/detail_icon_size"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:contentDescription="@string/due_date"
             android:id="@+id/option_icon"
-            android:layout_marginHorizontal="@dimen/task_padding"
             app:srcCompat="@drawable/event" />
 
         <TextView
@@ -34,19 +32,17 @@
             android:gravity="center_vertical"
             android:text="@string/place_alert_text"
             android:id="@+id/option_text"
-            android:textSize="18sp"
-            android:paddingLeft="@dimen/task_padding"
-            android:layout_weight="1"
-            android:textStyle="bold" />
-
-
+            android:textSize="16sp"
+            android:layout_marginStart="20dp"
+            android:layout_weight="1" />
 
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:layout_marginHorizontal="@dimen/task_padding"
+        android:layout_height="1dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
         android:background="#c0c0c0"/>
 
 </LinearLayout>

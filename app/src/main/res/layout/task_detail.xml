@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     tools:context=".ui.fragments.TaskDetailFragment"
     android:id="@+id/frameLayout">
-
 
     <TextView
         android:id="@+id/task_detail"
@@ -24,26 +23,56 @@
         android:id="@+id/edit_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
         android:layout_marginTop="8dp"
         android:layout_marginStart="12dp"
         android:layout_marginEnd="12dp"
         android:ems="10"
         android:gravity="start|bottom"
         android:hint="@string/description"
-        android:autofillHints="@string/description"
         android:inputType="textMultiLine" />
 
     <LinearLayout
         android:id="@+id/actionButtons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"></LinearLayout>
+        android:orientation="vertical" />
 
     <include layout="@layout/quick_add"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        />
+        android:layout_margin="8dp" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/sub_items"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_marginStart="16dp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/sub_task_list"
+        android:name="com.yoseph.re_mind.ui.activities.TaskSubItemsFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        app:layoutManager="LinearLayoutManager"
+        tools:context=".ui.fragments.OverviewFragment"
+        tools:listitem="@layout/task_list_content"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/empty_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Empty"
+        android:textSize="16sp"
+        android:layout_marginStart="18dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"/>
+
 
 </LinearLayout>

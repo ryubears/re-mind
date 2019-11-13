@@ -1,9 +1,9 @@
 package com.yoseph.re_mind.ui.activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,7 +11,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.DialogFragment;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.yoseph.re_mind.R;
 import com.yoseph.re_mind.data.CategoryContent;
 import com.yoseph.re_mind.ui.fragments.DatePickerFragment;
@@ -19,6 +18,7 @@ import com.yoseph.re_mind.ui.fragments.DetailButtonFragment;
 import com.yoseph.re_mind.ui.fragments.OverviewFragment;
 import com.yoseph.re_mind.ui.fragments.SetCategoryListDialogFragment;
 import com.yoseph.re_mind.ui.fragments.TaskDetailFragment;
+import com.yoseph.re_mind.ui.fragments.TypeItemBottomSheetListDialogFragment;
 
 /**
  * An activity representing a single Task detail screen. This
@@ -26,11 +26,17 @@ import com.yoseph.re_mind.ui.fragments.TaskDetailFragment;
  */
 public class TaskDetailActivity extends AppCompatActivity implements DetailButtonFragment.OnFragmentInteractionListener {
 
+    public static final String TEXT = "TEXT";
+
+    public static boolean isRepeat = false;
+
     public static final int SET_DATE = 0;
     public static final int SET_LOCATION = 1;
     public static final int SET_REPEAT = 2;
     public static final int SET_SHARE = 3;
     public static final int SET_CATEGORY = 4;
+
+    public static final int ADD_SUB_TASK = 5;
 
     private TaskDetailFragment fragment;
 
@@ -39,15 +45,14 @@ public class TaskDetailActivity extends AppCompatActivity implements DetailButto
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_detail);
         Toolbar toolbar = findViewById(R.id.detail_toolbar);
+
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own detail action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
+        fab.setOnClickListener(view -> {
+            DialogFragment dialogFragment = TypeItemBottomSheetListDialogFragment.newInstance("Add new sub task");
+            dialogFragment.setTargetFragment(fragment, ADD_SUB_TASK);
+            dialogFragment.show(getSupportFragmentManager(), "addSubTask");
         });
 
         // Show the Up button in the action bar.
@@ -93,22 +98,31 @@ public class TaskDetailActivity extends AppCompatActivity implements DetailButto
     @Override
     public void onFragmentInteraction(int type){
 
-        DialogFragment f = null;
+        DialogFragment dialogFragment = null;
         if (type == SET_DATE){
-            f = new DatePickerFragment();
+            dialogFragment = new DatePickerFragment();
         } else if (type == SET_SHARE) {
-
+            dialogFragment = TypeItemBottomSheetListDialogFragment.newInstance("Email to share task with");
         } else if (type == SET_CATEGORY) {
-            f = SetCategoryListDialogFragment.newInstance("Set Category", "For filtering actions", R.drawable.category, CategoryContent.getTitles(), CategoryContent.getIcons());
+            dialogFragment = SetCategoryListDialogFragment.newInstance("Set Category", "For filtering actions", R.drawable.category, CategoryContent.getTitles(), CategoryContent.getIcons());
         } else if (type == SET_LOCATION) {
-            String[] optionTitles = new String[] { "Grocery", "Pharmacy", "Home Improvement", "Search" };
+            String[] optionTitles = new String[] { "Grocery", "Pharmacy", "Home Improvement" };
             int[] optionIcons = new int[] { R.drawable.category, R.drawable.event, R.drawable.category, R.drawable.add_black };
-            f = SetCategoryListDialogFragment.newInstance("Set Location", "Be reminded when you travel nearby", R.drawable.location, optionTitles, optionIcons);
+            dialogFragment = SetCategoryListDialogFragment.newInstance("Set Location", "Be reminded when you travel nearby", R.drawable.location, optionTitles, optionIcons);
+        } else if (type == SET_REPEAT) {
+            String repeatString = "";
+            isRepeat = !isRepeat;
+            if (isRepeat) {
+                repeatString = "On";
+            }
+            Intent intent = new Intent();
+            intent.putExtra(TEXT, repeatString);
+            fragment.onActivityResult(type, Activity.RESULT_OK, intent);
         }
 
-        if (f != null) {
-            f.setTargetFragment(fragment, type);
-            f.show(getSupportFragmentManager(), "buttonAction");
+        if (dialogFragment != null) {
+            dialogFragment.setTargetFragment(fragment, type);
+            dialogFragment.show(getSupportFragmentManager(), "buttonAction");
         }
 
     }

@@ -49,6 +49,7 @@
         android:layout_margin="@dimen/fab_margin"
         app:layout_anchor="@+id/task_detail_container"
         app:layout_anchorGravity="top|end"
+        app:backgroundTint="@android:color/white"
         app:srcCompat="@drawable/add_white_transparent" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -25,16 +25,25 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.yoseph.re_mind.R;
 import com.yoseph.re_mind.receiver.NotificationActionReceiver;
 import com.yoseph.re_mind.ui.fragments.BottomSheetFragment;
 import com.yoseph.re_mind.ui.fragments.MapFragment;
 import com.yoseph.re_mind.ui.fragments.OverviewFragment;
 import com.yoseph.re_mind.ui.fragments.TaskDetailFragment;
+import com.yoseph.re_mind.ui.interfaces.CallBackListener;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements CallBackListener {
+
+    private static final String USER_YEHYUN = "ryuxx115";
+    private static final String USER_DONGHA = "kangx637";
+    private static String userId;
 
     // View references.
     private DrawerLayout drawerLayout;
@@ -116,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
             PendingIntent actionPendingIntent = PendingIntent.getBroadcast(this, NOTIFICATION_ID, actionIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 
             NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
-                    .setSmallIcon(R.drawable.app_icon)
+                    .setSmallIcon(R.drawable.logo_imperialred)
                     .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.marker_icon))
                     .setContentTitle("Demo UI App")
                     .setContentText("Location: Keller Hall")
@@ -131,6 +140,32 @@ public class MainActivity extends AppCompatActivity {
             notificationManager.notify(NOTIFICATION_ID, builder.build());
 
             return true;
+        });
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference root = database.getReference("id");
+        root.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                long id = (long) dataSnapshot.getValue();
+                if (id % 2 == 0) {
+                    userId = USER_YEHYUN;
+                    Toast.makeText(getApplicationContext(), "User: ryuxx115", Toast.LENGTH_LONG).show();
+                } else {
+                    userId = USER_DONGHA;
+                    Toast.makeText(getApplicationContext(), "User: kangx637", Toast.LENGTH_LONG).show();
+                }
+
+                OverviewFragment overviewFragment = (OverviewFragment) getSupportFragmentManager().findFragmentByTag(TAG_OVERVIEW);
+                overviewFragment.addFirebaseListeners(userId);
+
+                root.setValue(id + 1);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
         });
     }
 
@@ -299,5 +334,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    @Override
+    public void onCallBack() {
+        if (navItemIndex == 0) {
+            OverviewFragment overviewFragment = (OverviewFragment) getSupportFragmentManager().findFragmentByTag(CURRENT_TAG);
+            overviewFragment.refreshRecyclerView();
+        }
     }
 }

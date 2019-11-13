@@ -25,7 +25,9 @@ import com.yoseph.re_mind.R;
  * </pre>
  */
 public class SetCategoryListDialogFragment extends BottomSheetDialogFragment {
-    public static final String SELECTION = "CATEGORY";
+
+    public static final String TEXT = "TEXT";
+    public static final String CREATE_NEW = "CREATE_NEW";
 
     private static final String ARG_TITLE = "title";
     private static final String ARG_DESCRIPTION = "description";
@@ -35,7 +37,6 @@ public class SetCategoryListDialogFragment extends BottomSheetDialogFragment {
 
     private String[] items;
     private int[] icons;
-
 
     public static SetCategoryListDialogFragment newInstance(String title, String description, int icon, String[] items, int[] icons) {
         final SetCategoryListDialogFragment fragment = new SetCategoryListDialogFragment();
@@ -77,21 +78,22 @@ public class SetCategoryListDialogFragment extends BottomSheetDialogFragment {
         final ImageView icon;
 
         ViewHolder(LayoutInflater inflater, ViewGroup parent) {
-            // TODO: Customize the item layout
             super(inflater.inflate(R.layout.fragment_setcategory_list_dialog_item, parent, false));
             text = itemView.findViewById(R.id.option_text);
             icon = itemView.findViewById(R.id.option_icon);
-            text.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent();
-                    intent.putExtra(SELECTION, items[getAdapterPosition()]);
-
-                    // pass intent to target fragment
-                    Fragment f = getTargetFragment();
-                    f.onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, intent);
-                    dismiss();
+            text.setOnClickListener(v -> {
+                Intent intent = new Intent();
+                int selected = getAdapterPosition();
+                if (selected >= items.length) {
+                    intent.putExtra(CREATE_NEW, true);
+                } else {
+                    intent.putExtra(TEXT, items[selected]);
                 }
+
+                // pass intent to target fragment
+                Fragment fragment = getTargetFragment();
+                fragment.onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, intent);
+                dismiss();
             });
         }
 
@@ -114,13 +116,18 @@ public class SetCategoryListDialogFragment extends BottomSheetDialogFragment {
 
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
-            holder.text.setText(mItems[position]);
-            holder.icon.setImageResource(mIcons[position]);
+            if (position >= mItems.length) {
+                holder.text.setText("Create New");
+                holder.icon.setImageResource(R.drawable.add_black);
+            } else {
+                holder.text.setText(mItems[position]);
+                holder.icon.setImageResource(mIcons[position]);
+            }
         }
 
         @Override
         public int getItemCount() {
-            return mItems.length;
+            return mItems.length + 1;
         }
 
     }
