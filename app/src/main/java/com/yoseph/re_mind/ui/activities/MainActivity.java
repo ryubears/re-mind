@@ -88,6 +88,7 @@ public class MainActivity extends AppCompatActivity implements CallBackListener 
         setSupportActionBar(toolbar);
         setFloatingActionButton();
         setProfileButton();
+        setProfileButtonNavHeader();
 
         // Disable title.
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -193,7 +194,18 @@ public class MainActivity extends AppCompatActivity implements CallBackListener 
 
     private void setProfileButton() {
         final Button button = (Button) findViewById(R.id.profile_button);
+
         button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, ProfileActivity.class));
+            }
+        });
+    }
+
+    private void setProfileButtonNavHeader() {
+        final NavigationView nav_header = (NavigationView) findViewById(R.id.nav_view);
+        View header = navigationView.getHeaderView(0);
+        header.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this, ProfileActivity.class));
             }
