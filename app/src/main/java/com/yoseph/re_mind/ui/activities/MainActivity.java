@@ -127,7 +127,7 @@ public class MainActivity extends AppCompatActivity implements CallBackListener 
             NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
                     .setSmallIcon(R.drawable.logo_imperialred)
                     .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.marker_icon))
-                    .setContentTitle("Demo UI App")
+                    .setContentTitle("Drop off take home midterm")
                     .setContentText("Location: Keller Hall")
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                     .setContentIntent(pendingIntent)
