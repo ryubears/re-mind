@@ -26,14 +26,26 @@
         android:layout_marginBottom="24dp"
         android:layout_marginEnd="16dp"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/alert_option"
+
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/add_reminder_button"/>
 
-<!--    <TextView-->
-<!--        android:id="@+id/add_reminder_description"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
+    <EditText
+        android:id="@+id/add_reminder_description_edittext"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:hint="Description"
+        android:textSize="20sp"
+        android:lines="1"
+        android:singleLine="true"
+        android:imeOptions="actionDone"
+        android:background="@android:color/white"
+        android:paddingStart="4dp"
+        android:layout_marginBottom="24dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintTop_toBottomOf="@id/add_reminder_edittext"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <ImageButton
         android:id="@+id/add_reminder_button"
@@ -52,7 +64,9 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center"
-        android:layout_marginBottom="24dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintTop_toBottomOf="@id/add_reminder_description_edittext"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
