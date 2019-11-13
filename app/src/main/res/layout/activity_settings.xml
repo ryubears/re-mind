@@ -29,8 +29,7 @@
         android:textColor="#2C2C2C"
         android:textSize="24sp"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar"
-        ></TextView>
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"/>
 
     <TextView
         android:id="@+id/VersionNumber"
@@ -42,8 +41,7 @@
         android:textColor="#949494"
         android:textSize="12sp"
         app:layout_constraintTop_toBottomOf="@id/textViewVersion"
-        app:layout_constraintLeft_toLeftOf="parent"
-        ></TextView>
+        app:layout_constraintLeft_toLeftOf="parent"/>
 
 
     <ImageView
@@ -54,8 +52,7 @@
         android:layout_marginRight="24dp"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginTop="20dp"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar"
-        ></ImageView>
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"/>
 
 
     <View
@@ -64,11 +61,9 @@
         android:layout_height="2dp"
         android:layout_marginTop="12dp"
         app:layout_constraintTop_toBottomOf="@+id/VersionNumber"
-        android:background="#D8D8D8"></View>
-
-
-
-<!--    General-->
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="#D8D8D8"/>
 
     <ImageView
         android:id="@+id/GlobalIcon"
@@ -78,8 +73,7 @@
         android:layout_marginStart="16dp"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="24dp"
-        app:layout_constraintTop_toBottomOf="@id/GeneralLine1">
-    </ImageView>
+        app:layout_constraintTop_toBottomOf="@id/GeneralLine1" />
 
     <TextView
         android:id="@+id/textView2"
@@ -91,8 +85,7 @@
         android:layout_marginLeft="16dp"
         app:layout_constraintLeft_toRightOf="@+id/GlobalIcon"
         android:layout_marginTop="24dp"
-        app:layout_constraintTop_toBottomOf="@+id/GeneralLine1"
-        ></TextView>
+        app:layout_constraintTop_toBottomOf="@+id/GeneralLine1" />
 
     <Switch
         android:id="@+id/globalSwitch"
@@ -101,9 +94,7 @@
         android:layout_marginRight="24dp"
         android:layout_marginTop="24dp"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/GeneralLine1"
-        ></Switch>
-
+        app:layout_constraintTop_toTopOf="@+id/GeneralLine1" />
 
     <ImageView
         android:id="@+id/UmbrellaIcon"
@@ -113,9 +104,7 @@
         android:layout_marginStart="16dp"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="24dp"
-        app:layout_constraintTop_toBottomOf="@id/GlobalIcon">
-    </ImageView>
-
+        app:layout_constraintTop_toBottomOf="@id/GlobalIcon" />
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
@@ -126,11 +115,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView2"
         android:text="Enable Weather Todos"
         android:textColor="#2C2C2C"
-        android:textSize="18sp"
-
-        ></TextView>
-
-
+        android:textSize="18sp" />
 
     <Switch
         android:id="@+id/weatherSwitch"
@@ -139,8 +124,7 @@
         android:layout_marginRight="24dp"
         android:layout_marginTop="24dp"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/globalSwitch"
-        ></Switch>
+        app:layout_constraintTop_toBottomOf="@+id/globalSwitch" />
 
     <ImageView
         android:id="@+id/ShareIcon"
@@ -150,8 +134,7 @@
         android:layout_marginStart="16dp"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="24dp"
-        app:layout_constraintTop_toBottomOf="@id/UmbrellaIcon">
-    </ImageView>
+        app:layout_constraintTop_toBottomOf="@id/UmbrellaIcon" />
 
     <TextView
         android:id="@+id/textView3"
@@ -163,11 +146,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView"
         android:text="Enable Share with Others"
         android:textColor="#2C2C2C"
-        android:textSize="18sp"
-
-        ></TextView>
-
-
+        android:textSize="18sp" />
 
     <Switch
         android:id="@+id/shareSwitch"
@@ -176,8 +155,7 @@
         android:layout_marginRight="24dp"
         android:layout_marginTop="24dp"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/weatherSwitch"
-        ></Switch>
+        app:layout_constraintTop_toBottomOf="@+id/weatherSwitch" />
 
 
     <ImageView
@@ -188,8 +166,7 @@
         android:layout_marginStart="16dp"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="24dp"
-        app:layout_constraintTop_toBottomOf="@id/ShareIcon">
-    </ImageView>
+        app:layout_constraintTop_toBottomOf="@id/ShareIcon" />
 
     <TextView
         android:id="@+id/textView4"
@@ -201,11 +178,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView3"
         android:text="Enable Notification"
         android:textColor="#2C2C2C"
-        android:textSize="18sp"
-
-        ></TextView>
-
-
+        android:textSize="18sp" />
 
     <Switch
         android:id="@+id/notificationSwitch"
@@ -214,9 +187,7 @@
         android:layout_marginRight="24dp"
         android:layout_marginTop="24dp"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/shareSwitch"
-        ></Switch>
-
+        app:layout_constraintTop_toBottomOf="@+id/shareSwitch" />
 
     <ImageView
         android:id="@+id/LocationIcon"
@@ -226,8 +197,7 @@
         android:layout_marginStart="16dp"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="24dp"
-        app:layout_constraintTop_toBottomOf="@id/NotificationIcon">
-    </ImageView>
+        app:layout_constraintTop_toBottomOf="@id/NotificationIcon" />
 
     <TextView
         android:id="@+id/textView5"
@@ -239,11 +209,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView4"
         android:text="Enable Notification"
         android:textColor="#2C2C2C"
-        android:textSize="18sp"
-
-        ></TextView>
-
-
+        android:textSize="18sp" />
 
     <Switch
         android:id="@+id/locationSwitch"
@@ -252,10 +218,7 @@
         android:layout_marginRight="24dp"
         android:layout_marginTop="24dp"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/notificationSwitch"
-        ></Switch>
-
-
+        app:layout_constraintTop_toBottomOf="@+id/notificationSwitch" />
 
     <View
         android:id="@+id/GeneralLine2"
@@ -263,8 +226,9 @@
         android:layout_height="2dp"
         android:layout_marginTop="24dp"
         app:layout_constraintTop_toBottomOf="@+id/LocationIcon"
-        android:background="#D8D8D8"></View>
-
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="#D8D8D8" />
 
     <TextView
         android:id="@+id/language"
@@ -276,9 +240,7 @@
         app:layout_constraintTop_toBottomOf="@+id/GeneralLine2"
         android:text="Language"
         android:textColor="#2C2C2C"
-        android:textSize="20sp"
-        ></TextView>
-
+        android:textSize="20sp" />
 
     <TextView
         android:id="@+id/languageEnglish"
@@ -290,6 +252,6 @@
         app:layout_constraintTop_toBottomOf="@+id/GeneralLine2"
         android:text="English"
         android:textColor="#919191"
-        android:textSize="18sp"
-        ></TextView>
+        android:textSize="18sp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
