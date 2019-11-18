@@ -7,8 +7,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.RadioButton;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -27,7 +30,7 @@ import com.yoseph.re_mind.ui.activities.TaskDetailActivity;
 
 import java.util.List;
 
-public class OverviewFragment extends Fragment {
+public class OverviewFragment extends Fragment implements AdapterView.OnItemSelectedListener {
 
     private RecyclerView recyclerView;
     private SimpleItemRecyclerViewAdapter adapter;
@@ -41,13 +44,40 @@ public class OverviewFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_overview, container, false);
 
-        recyclerView = rootView.findViewById(R.id.task_list);
+        View recyclerView = rootView.findViewById(R.id.task_list);
         assert recyclerView != null;
+        setupRecyclerView((RecyclerView) recyclerView);
 
-        adapter = new OverviewFragment.SimpleItemRecyclerViewAdapter(TaskContent.ITEMS);
-        recyclerView.setAdapter(adapter);
+        Spinner spinner = rootView.findViewById(R.id.filter_spinner);
+
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),
+                R.array.filter, android.R.layout.simple_spinner_item);
+        // Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(this);
 
         return rootView;
+    }
+
+    private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
+        recyclerView.setAdapter(new OverviewFragment.SimpleItemRecyclerViewAdapter(TaskContent.getItems()));
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view,
+                               int pos, long id) {
+        // An item was selected. You can retrieve the selected item using
+        String filter_title = parent.getItemAtPosition(pos).toString();
+
+        TaskContent.runFilter(filter_title);
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+        // Another interface callback
     }
 
 
