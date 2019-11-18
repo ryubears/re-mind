@@ -208,6 +208,7 @@ public class TaskDetailFragment extends Fragment implements TaskDetailCallBackLi
             String result = (String) data.getSerializableExtra(TypeItemBottomSheetListDialogFragment.TEXT);
             mItem.subList.add(result);
             subItemsViews.getAdapter().notifyDataSetChanged();
+            onCallBack(null);
         }
     }
 
