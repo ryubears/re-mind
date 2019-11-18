@@ -56,7 +56,7 @@ public class BottomSheetFragment extends BottomSheetDialogFragment {
             int id = 100 + (int)(Math.random() * ((1000 - 100) + 1));
             String newTask = addItemEditText.getText().toString();
             String details = descriptionEditText.getText().toString();
-            TaskContent.TaskItem taskItem = new TaskContent.TaskItem(String.valueOf(id), newTask, "No Description", alertType);
+            TaskContent.TaskItem taskItem = new TaskContent.TaskItem(String.valueOf(id), newTask, "No Description", alertType,null);
             if (newTask.isEmpty()) {
                 return;
             } else {
