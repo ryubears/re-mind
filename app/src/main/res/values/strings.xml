@@ -20,6 +20,13 @@
         <item>Settings</item>
     </string-array>
 
+    <string-array name="filter">
+        <item>All</item>
+        <item>Homework</item>
+        <item>Event</item>
+        <item>Shopping List</item>
+    </string-array>
+
     <string name="nav_fab_content_description">Add Task</string>
 
     <string name="bottom_sheet_edittext_hint">Title</string>
