@@ -21,6 +21,7 @@ public class TaskContent {
     public static final int TYPE_LOCATION = 3;
     public static final int TYPE_WEATHER = 4;
     public static final int TYPE_GLOBAL = 5;
+    public static int FILTER = -1;
 
     /**
      * An array of sample (dummy) items.
@@ -34,34 +35,36 @@ public class TaskContent {
     public static final Map<String, TaskItem> ITEM_MAP = new HashMap<>();
 
     static {
-        addItem(new TaskItem("0","Groceries", "Shopping List", TYPE_LIST, new CategoryContent.CategoryItem("Shopping List",R.drawable.ic_view_list_black_24dp)));
-        addItem(new TaskItem("1","Vote, US General Election", "November 3, 2020", TYPE_GLOBAL, new CategoryContent.CategoryItem("Event",R.drawable.event)));
-        addItem(new TaskItem("2","Take out the trash",  "Shared with Kadin", TYPE_SHARED, new CategoryContent.CategoryItem("Event",R.drawable.event)));
-        addItem(new TaskItem("3","Bring an Umbrella",  "Chance of Rain Today", TYPE_WEATHER, new CategoryContent.CategoryItem("Event",R.drawable.event)));
-        addItem(new TaskItem("4","Holiday List",  "Shopping List", TYPE_GENERAL, new CategoryContent.CategoryItem("Shopping List",R.drawable.ic_view_list_black_24dp)));
-        addItem(new TaskItem("5","Drop off take home midterm",  "Arriving at Keller Hall", TYPE_LOCATION, new CategoryContent.CategoryItem("Homework", R.drawable.category)));
+        addItem(new TaskItem("0","Groceries", "Shopping List", TYPE_LIST, new CategoryContent.CategoryItem("Shopping List",2,R.drawable.ic_view_list_black_24dp)));
+        addItem(new TaskItem("1","Vote, US General Election", "November 3, 2020", TYPE_GLOBAL, new CategoryContent.CategoryItem("Event",1,R.drawable.event)));
+        addItem(new TaskItem("2","Take out the trash",  "Shared with Kadin", TYPE_SHARED, new CategoryContent.CategoryItem("Event",1,R.drawable.event)));
+        addItem(new TaskItem("3","Bring an Umbrella",  "Chance of Rain Today", TYPE_WEATHER, new CategoryContent.CategoryItem("Event",1,R.drawable.event)));
+        addItem(new TaskItem("4","Holiday List",  "Shopping List", TYPE_GENERAL, new CategoryContent.CategoryItem("Shopping List",2,R.drawable.ic_view_list_black_24dp)));
+        addItem(new TaskItem("5","Drop off take home midterm",  "Arriving at Keller Hall", TYPE_LOCATION, new CategoryContent.CategoryItem("Homework",0, R.drawable.category)));
+    }
+
+    public static void setFilter(int x) {
+        FILTER = x;
     }
 
     public static List<TaskItem> getItems() {
-        return ITEMS;
-    }
-
-    public static void runFilter(String filter) {
-        List<TaskItem> FILTERED_ITEMS = new ArrayList<>();
-        if (filter.equals("All")) {
-            ITEMS.clear();
-            ITEMS.addAll(STATIC_ITEMS);
+        if (FILTER < 0) {
+            return ITEMS;
         } else {
-            for (TaskItem x : ITEMS) {
-                if (x.category.toString().equals(filter)) {
-                    FILTERED_ITEMS.add(x);
-                }
-            }
-            ITEMS.clear();
-            ITEMS.addAll(FILTERED_ITEMS);
+           return filter(FILTER);
         }
     }
 
+    private static List<TaskItem> filter(int x) {
+        List<TaskItem> temp = new ArrayList<>();
+
+        for(TaskItem y : ITEMS) {
+            if(y.category.getVal() == x) {
+                temp.add(y);
+            }
+        }
+        return temp;
+    }
 
     public static void addItem(TaskItem item) {
         ITEMS.add(item);
