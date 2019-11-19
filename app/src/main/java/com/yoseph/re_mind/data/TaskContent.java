@@ -21,13 +21,13 @@ public class TaskContent {
     public static final int TYPE_LOCATION = 3;
     public static final int TYPE_WEATHER = 4;
     public static final int TYPE_GLOBAL = 5;
+
     public static int FILTER = -1;
 
     /**
      * An array of sample (dummy) items.
      */
     public static final List<TaskItem> ITEMS = new ArrayList<>();
-    public static final List<TaskItem> STATIC_ITEMS = new ArrayList<>();
 
     /**
      * A map of sample (dummy) items, by ID.
@@ -103,9 +103,9 @@ public class TaskContent {
         public String location;
         public int type = 0;
 
-        public final List<String> subList = new ArrayList<>();
-
         public TaskItem() {}
+
+        public final List<String> subList = new ArrayList<>();
 
         public TaskItem(String id, String title, String details, int type, CategoryContent.CategoryItem category) {
             this.id = id;
