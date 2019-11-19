@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -44,15 +45,15 @@ public class OverviewFragment extends Fragment implements AdapterView.OnItemSele
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_overview, container, false);
 
-        View recyclerView = rootView.findViewById(R.id.task_list);
+        recyclerView = rootView.findViewById(R.id.task_list);
         assert recyclerView != null;
-        setupRecyclerView((RecyclerView) recyclerView);
+        recyclerViewAdapter = new OverviewFragment.SimpleItemRecyclerViewAdapter(TaskContent.getItems());
+        recyclerView.setAdapter(recyclerViewAdapter);
 
         Spinner spinner = rootView.findViewById(R.id.filter_spinner);
 
         // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(getActivity(),
-                R.array.filter, android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(getActivity(), R.array.filter, android.R.layout.simple_spinner_item);
         // Specify the layout to use when the list of choices appears
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
@@ -62,27 +63,24 @@ public class OverviewFragment extends Fragment implements AdapterView.OnItemSele
         return rootView;
     }
 
-    private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        recyclerView.setAdapter(new OverviewFragment.SimpleItemRecyclerViewAdapter(TaskContent.getItems()));
-    }
-
     @Override
     public void onItemSelected(AdapterView<?> parent, View view,
                                int pos, long id) {
-        // An item was selected. You can retrieve the selected item using
-        String filter_title = parent.getItemAtPosition(pos).toString();
-
-        switch (filter_title) {
-            case "All":
-                TaskContent.setFilter(-1);
-            case "Homework":
+        switch (pos) {
+            case 1:
                 TaskContent.setFilter(0);
-            case "Event":
+                break;
+            case 2:
                 TaskContent.setFilter(1);
-            case "Shopping List":
+                break;
+            case 3:
                 TaskContent.setFilter(2);
+                break;
+            default:
+                TaskContent.setFilter(-1);
         }
-        SimpleItemRecyclerViewAdapter.updateList();
+
+        recyclerViewAdapter.updateList();
         recyclerViewAdapter.notifyDataSetChanged();
     }
 
@@ -90,7 +88,6 @@ public class OverviewFragment extends Fragment implements AdapterView.OnItemSele
     public void onNothingSelected(AdapterView<?> parent) {
         // Another interface callback
     }
-
 
     public void addFirebaseListeners(String userId) {
         // Get a Firebase Realtime Database reference.
@@ -104,13 +101,16 @@ public class OverviewFragment extends Fragment implements AdapterView.OnItemSele
                 TaskContent.TaskItem taskItem = dataSnapshot.getValue(TaskContent.TaskItem.class);
                 TaskContent.addItem(taskItem);
                 recyclerViewAdapter.notifyItemInserted(TaskContent.ITEMS.size() - 1);
+                recyclerViewAdapter.updateList();
+                recyclerViewAdapter.notifyDataSetChanged();
             }
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 TaskContent.TaskItem taskItem = dataSnapshot.getValue(TaskContent.TaskItem.class);
                 TaskContent.addItem(taskItem);
-                recyclerViewAdapter.notifyItemInserted(TaskContent.ITEMS.size() - 1);
+                recyclerViewAdapter.updateList();
+                recyclerViewAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -131,7 +131,6 @@ public class OverviewFragment extends Fragment implements AdapterView.OnItemSele
     }
 
     public void refreshRecyclerView() {
-
         recyclerViewAdapter.notifyDataSetChanged();
     }
 
@@ -150,11 +149,10 @@ public class OverviewFragment extends Fragment implements AdapterView.OnItemSele
         };
 
         SimpleItemRecyclerViewAdapter(List<TaskContent.TaskItem> items) {
-
             mValues = items;
         }
 
-        public static void updateList() {
+        public void updateList() {
             mValues = TaskContent.getItems();
         }
 
