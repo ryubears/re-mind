@@ -39,9 +39,11 @@ public class CategoryContent {
 
     public static class CategoryItem {
 
-        public final String title;
-        public final int val;
-        public final int icon;
+        public String title;
+        public int val;
+        public int icon;
+
+        public CategoryItem() {}
 
         public CategoryItem(String title, int val, int icon) {
             this.title = title;
