@@ -9,9 +9,9 @@ public class CategoryContent {
     public static final List<CategoryItem> CATEGORIES = new ArrayList<>();
 
     static {
-        addItem(new CategoryItem("Homework", R.drawable.category));
-        addItem(new CategoryItem("Event",R.drawable.event));
-        addItem(new CategoryItem("Shopping List",R.drawable.ic_view_list_black_24dp));
+        addItem(new CategoryItem("Homework", 0, R.drawable.category));
+        addItem(new CategoryItem("Event",1,R.drawable.event));
+        addItem(new CategoryItem("Shopping List",2, R.drawable.ic_view_list_black_24dp));
     }
 
     private static void addItem(CategoryItem item) {
@@ -40,11 +40,17 @@ public class CategoryContent {
     public static class CategoryItem {
 
         public final String title;
+        public final int val;
         public final int icon;
 
-        public CategoryItem(String title, int icon) {
+        public CategoryItem(String title, int val, int icon) {
             this.title = title;
+            this.val = val;
             this.icon = icon;
+        }
+
+        public int getVal() {
+            return this.val;
         }
 
         @Override

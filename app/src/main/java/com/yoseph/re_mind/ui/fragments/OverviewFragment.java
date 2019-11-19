@@ -33,7 +33,7 @@ import java.util.List;
 public class OverviewFragment extends Fragment implements AdapterView.OnItemSelectedListener {
 
     private RecyclerView recyclerView;
-    private SimpleItemRecyclerViewAdapter adapter;
+    private SimpleItemRecyclerViewAdapter recyclerViewAdapter;
 
     public OverviewFragment() {
         // Required empty public constructor.
@@ -51,12 +51,12 @@ public class OverviewFragment extends Fragment implements AdapterView.OnItemSele
         Spinner spinner = rootView.findViewById(R.id.filter_spinner);
 
         // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),
+        ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(getActivity(),
                 R.array.filter, android.R.layout.simple_spinner_item);
         // Specify the layout to use when the list of choices appears
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
-        spinner.setAdapter(adapter);
+        spinner.setAdapter(spinnerAdapter);
         spinner.setOnItemSelectedListener(this);
 
         return rootView;
@@ -72,7 +72,18 @@ public class OverviewFragment extends Fragment implements AdapterView.OnItemSele
         // An item was selected. You can retrieve the selected item using
         String filter_title = parent.getItemAtPosition(pos).toString();
 
-        TaskContent.runFilter(filter_title);
+        switch (filter_title) {
+            case "All":
+                TaskContent.setFilter(-1);
+            case "Homework":
+                TaskContent.setFilter(0);
+            case "Event":
+                TaskContent.setFilter(1);
+            case "Shopping List":
+                TaskContent.setFilter(2);
+        }
+        SimpleItemRecyclerViewAdapter.updateList();
+        recyclerViewAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -92,14 +103,14 @@ public class OverviewFragment extends Fragment implements AdapterView.OnItemSele
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 TaskContent.TaskItem taskItem = dataSnapshot.getValue(TaskContent.TaskItem.class);
                 TaskContent.addItem(taskItem);
-                adapter.notifyItemInserted(TaskContent.ITEMS.size() - 1);
+                recyclerViewAdapter.notifyItemInserted(TaskContent.ITEMS.size() - 1);
             }
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 TaskContent.TaskItem taskItem = dataSnapshot.getValue(TaskContent.TaskItem.class);
                 TaskContent.addItem(taskItem);
-                adapter.notifyItemInserted(TaskContent.ITEMS.size() - 1);
+                recyclerViewAdapter.notifyItemInserted(TaskContent.ITEMS.size() - 1);
             }
 
             @Override
@@ -120,12 +131,13 @@ public class OverviewFragment extends Fragment implements AdapterView.OnItemSele
     }
 
     public void refreshRecyclerView() {
-        adapter.notifyDataSetChanged();
+
+        recyclerViewAdapter.notifyDataSetChanged();
     }
 
     public static class SimpleItemRecyclerViewAdapter
             extends RecyclerView.Adapter<OverviewFragment.SimpleItemRecyclerViewAdapter.ViewHolder> {
-        private List<TaskContent.TaskItem> mValues;
+        private static List<TaskContent.TaskItem> mValues;
         private final View.OnClickListener mOnClickListener = view -> {
             TaskContent.TaskItem item = (TaskContent.TaskItem) view.getTag();
 
@@ -138,7 +150,12 @@ public class OverviewFragment extends Fragment implements AdapterView.OnItemSele
         };
 
         SimpleItemRecyclerViewAdapter(List<TaskContent.TaskItem> items) {
+
             mValues = items;
+        }
+
+        public static void updateList() {
+            mValues = TaskContent.getItems();
         }
 
         @Override

@@ -164,7 +164,7 @@ public class TaskDetailFragment extends Fragment implements TaskDetailCallBackLi
                     }
                 }
 
-                CategoryContent.CategoryItem item = new CategoryContent.CategoryItem(result, R.drawable.category);
+                CategoryContent.CategoryItem item = new CategoryContent.CategoryItem(result, -1, R.drawable.category);
                 CategoryContent.CATEGORIES.add(item);
                 mItem.setCategory(item);
 
